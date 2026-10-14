@@ -1,0 +1,7 @@
+tmp/
+*.pyc
+*.pyo
+*.pyd
+prompt.md
+
+strumenti/
