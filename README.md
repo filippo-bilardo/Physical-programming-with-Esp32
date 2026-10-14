@@ -6,7 +6,7 @@ Un corso pratico per imparare a programmare un microcontrollore attraverso eserc
 
 Il percorso prevede esempi equivalenti in **MicroPython** e **C++ con il framework Arduino**, per confrontare sintassi, API e modalità di esecuzione. Si parte dalla simulazione in **Wokwi** e si passa alla scheda reale con **Arduino IDE** per C++ e gli strumenti MicroPython.
 
-> **Stato dei materiali:** le esercitazioni **01–03 sono disponibili**, con tredici guide e dieci esempi in C++ e MicroPython, ciascuno corredato dai circuiti Wokwi. Le esercitazioni 04–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; i controlli locali sono documentati nel [rapporto delle verifiche](esercizi/VERIFICHE.md).
+> **Stato dei materiali:** le esercitazioni **01–03 sono disponibili**, con tredici guide e dieci esempi in C++ e MicroPython, ciascuno corredato dai circuiti Wokwi. Le esercitazioni 04–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; i controlli locali sono documentati nel [rapporto delle verifiche](strumenti/VERIFICHE.md).
 
 ## 🎯 Obiettivi formativi
 
@@ -74,15 +74,15 @@ Sulla scheda reale si lavora con logica a **3,3 V**: non applicare segnali a 5 V
 2. Avvia il modello e individua il codice, il circuito e il monitor seriale. Annota il tipo di scheda e i GPIO utilizzati.
 3. Apri anche il modello **MicroPython ESP32** collegato dalla stessa guida e individua il file `main.py`.
 4. Prova gli esempi Blink ufficiali collegati nella guida: osserva il lampeggio, modifica l’intervallo di attesa e confronta il risultato nei due linguaggi.
-5. Comincia dall’[esercitazione 01](esercizi/01-Introduzione-ESP32/README.md) e segui il relativo README per riprodurre il circuito e gli esempi.
+5. Comincia dall’[esercitazione 01](01-Introduzione-ESP32/README.md) e segui il relativo README per riprodurre il circuito e gli esempi.
 
-La [guida Wokwi con accenni a Tinkercad](esercizi/01-Introduzione-ESP32/06-Wokwi-e-Tinkercad.md) approfondisce importazione, console e circuiti. Wokwi supporta entrambe le modalità; le periferiche simulate e i relativi limiti sono elencati nella [documentazione ufficiale ESP32](https://docs.wokwi.com/guides/esp32).
+La [guida Wokwi con accenni a Tinkercad](01-Introduzione-ESP32/06-Wokwi-e-Tinkercad.md) approfondisce importazione, console e circuiti. Wokwi supporta entrambe le modalità; le periferiche simulate e i relativi limiti sono elencati nella [documentazione ufficiale ESP32](https://docs.wokwi.com/guides/esp32).
 
 ### 2. Prepara C++ sulla scheda reale
 
 1. Installa Arduino IDE.
 2. Segui la [procedura ufficiale Arduino-ESP32](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html): aggiungi nelle preferenze l’URL dell’indice stabile indicato dalla guida e installa **esp32 by Espressif Systems** dal gestore delle schede.
-3. Collega ESP32 con un cavo USB dati e seleziona il modello di scheda e la porta seriale corretti. Per la DOIT segui la [guida Arduino IDE](esercizi/01-Introduzione-ESP32/04-Arduino-IDE-e-DOIT-DevKit-V1.md) e la [guida ai driver USB-seriali](esercizi/01-Introduzione-ESP32/05-Driver-USB-seriale.md).
+3. Collega ESP32 con un cavo USB dati e seleziona il modello di scheda e la porta seriale corretti. Per la DOIT segui la [guida Arduino IDE](01-Introduzione-ESP32/04-Arduino-IDE-e-DOIT-DevKit-V1.md) e la [guida ai driver USB-seriali](01-Introduzione-ESP32/05-Driver-USB-seriale.md).
 4. Apri lo sketch dell’esempio, installa le dipendenze dichiarate e avvia la verifica della compilazione.
 5. Carica il programma e apri il monitor seriale alla velocità indicata dall’esempio. Confronta messaggi e comportamento del circuito con il risultato atteso.
 
@@ -104,22 +104,22 @@ Le esercitazioni **01–03 sono disponibili**: i rispettivi link aprono cartelle
 
 | N. | Esercitazione | Concetti e collegamento con l’architettura | Attività conclusiva prevista | Ambiente |
 | --- | --- | --- | --- | --- |
-| 01 | [Introduzione a ESP32](esercizi/01-Introduzione-ESP32/) | Microcontrollore, CPU, RAM, Flash, programma compilato e runtime MicroPython; strumenti e console | Eseguire un primo programma nei due linguaggi e modificare un lampeggio | Wokwi + scheda |
-| 02 | [Uscite digitali e LED](esercizi/02-Uscite-digitali-e-LED/) | GPIO in uscita, livelli logici, corrente e resistenza; funzioni, cicli e drive strength | Realizzare una sequenza luminosa con più LED | Wokwi + scheda |
-| 03 | [Ingressi digitali e pulsanti](esercizi/03-Ingressi-digitali-e-pulsanti/) | GPIO in ingresso, pull-up, pull-down, lettura periodica e rimbalzi dei contatti | Comandare una luce con un pulsante e filtrare i rimbalzi | Wokwi + scheda |
-| 04 | [Tempo e macchine a stati](esercizi/04-Tempo-e-macchine-a-stati/) | Attese bloccanti, contatori temporali, gestione del tempo e stato del programma | Costruire un semaforo con richiesta pedonale senza bloccare la lettura del pulsante | Wokwi + scheda |
-| 05 | [Ingressi analogici e ADC](esercizi/05-Ingressi-analogici-e-ADC/) | Conversione analogico-digitale, risoluzione, campionamento e rumore | Regolare una soglia con un potenziometro e segnalare il superamento | Wokwi + scheda; misure reali con multimetro |
-| 06 | [PWM e attuatori](esercizi/06-PWM-e-attuatori/) | Modulazione di larghezza d’impulso, frequenza, duty cycle e periferiche hardware | Variare luminosità e segnalazione sonora in base a un ingresso | Wokwi + scheda; alimentazione da verificare su hardware |
-| 07 | [Sensori e display I2C](esercizi/07-Sensori-e-display-I2C/) | Bus I²C, indirizzi, registri dei dispositivi, librerie e gestione delle letture | Visualizzare una temperatura e una soglia su un display OLED | Wokwi + scheda, con componenti supportati |
-| 08 | [Bus SPI e display grafici](esercizi/08-Bus-SPI-e-display-grafici/) | Clock, selezione del dispositivo, trasferimento seriale e memoria dei dati grafici | Mostrare su un display SPI un indicatore dell’ingresso analogico | Wokwi + scheda |
-| 09 | [Comunicazione seriale UART](esercizi/09-Comunicazione-seriale-UART/) | Trasmissione asincrona, baud rate, buffer e formato dei messaggi | Comandare un LED e leggere misure attraverso un semplice protocollo testuale | Wokwi + scheda; collegamento a PC o seconda scheda su hardware |
-| 10 | [Timer e interrupt](esercizi/10-Timer-e-interrupt/) | Timer hardware, eventi, routine di interrupt e dati condivisi | Contare impulsi e aggiornare periodicamente il display | Wokwi + scheda |
-| 11 | [Memorie e persistenza](esercizi/11-Memorie-e-persistenza/) | RAM e Flash, file, configurazioni persistenti, allocazione e limiti di scrittura | Salvare una soglia e ripristinarla al riavvio | Wokwi per la logica; scheda per verificare la persistenza dopo spegnimento |
-| 12 | [WiFi e HTTP](esercizi/12-WiFi-e-HTTP/) | Connessione di rete, indirizzi IP, richieste e risposte HTTP, timeout | Inviare una misura a un servizio HTTP e gestire un errore di connessione | Wokwi con rete simulata + scheda |
-| 13 | [Messaggistica MQTT](esercizi/13-Messaggistica-MQTT/) | Broker, topic, pubblicazione, sottoscrizione e riconnessione | Pubblicare misure e ricevere una nuova soglia tramite MQTT | Wokwi + scheda, con broker raggiungibile |
-| 14 | [Attività concorrenti e robustezza](esercizi/14-Attivita-concorrenti-e-robustezza/) | Pianificazione cooperativa, coroutine MicroPython, introduzione ai task FreeRTOS in C++, risorse condivise | Integrare acquisizione, display e rete mantenendo reattivi i comandi | Wokwi + scheda |
-| 15 | [Risparmio energetico](esercizi/15-Risparmio-energetico/) | Consumo, sospensione, deep sleep, risveglio e stato conservato | Acquisire una misura, trasmetterla e sospendere la scheda tra due rilevazioni | Scheda reale per risvegli e misure dei consumi |
-| 16 | [Progetto finale: stazione ambientale](esercizi/16-Progetto-finale-stazione-ambientale/) | Integrazione di periferiche, memoria, rete e gestione degli errori | Realizzare una stazione con display, allarme locale, soglia persistente e telemetria MQTT | Wokwi per le parti supportate + collaudo su scheda |
+| 01 | [Introduzione a ESP32](01-Introduzione-ESP32/) | Microcontrollore, CPU, RAM, Flash, programma compilato e runtime MicroPython; strumenti e console | Eseguire un primo programma nei due linguaggi e modificare un lampeggio | Wokwi + scheda |
+| 02 | [Uscite digitali e LED](02-Uscite-digitali-e-LED/) | GPIO in uscita, livelli logici, corrente e resistenza; funzioni, cicli e drive strength | Realizzare una sequenza luminosa con più LED | Wokwi + scheda |
+| 03 | [Ingressi digitali e pulsanti](03-Ingressi-digitali-e-pulsanti/) | GPIO in ingresso, pull-up, pull-down, lettura periodica e rimbalzi dei contatti | Comandare una luce con un pulsante e filtrare i rimbalzi | Wokwi + scheda |
+| 04 | [Tempo e macchine a stati](04-Tempo-e-macchine-a-stati/) | Attese bloccanti, contatori temporali, gestione del tempo e stato del programma | Costruire un semaforo con richiesta pedonale senza bloccare la lettura del pulsante | Wokwi + scheda |
+| 05 | [Ingressi analogici e ADC](05-Ingressi-analogici-e-ADC/) | Conversione analogico-digitale, risoluzione, campionamento e rumore | Regolare una soglia con un potenziometro e segnalare il superamento | Wokwi + scheda; misure reali con multimetro |
+| 06 | [PWM e attuatori](06-PWM-e-attuatori/) | Modulazione di larghezza d’impulso, frequenza, duty cycle e periferiche hardware | Variare luminosità e segnalazione sonora in base a un ingresso | Wokwi + scheda; alimentazione da verificare su hardware |
+| 07 | [Sensori e display I2C](07-Sensori-e-display-I2C/) | Bus I²C, indirizzi, registri dei dispositivi, librerie e gestione delle letture | Visualizzare una temperatura e una soglia su un display OLED | Wokwi + scheda, con componenti supportati |
+| 08 | [Bus SPI e display grafici](08-Bus-SPI-e-display-grafici/) | Clock, selezione del dispositivo, trasferimento seriale e memoria dei dati grafici | Mostrare su un display SPI un indicatore dell’ingresso analogico | Wokwi + scheda |
+| 09 | [Comunicazione seriale UART](09-Comunicazione-seriale-UART/) | Trasmissione asincrona, baud rate, buffer e formato dei messaggi | Comandare un LED e leggere misure attraverso un semplice protocollo testuale | Wokwi + scheda; collegamento a PC o seconda scheda su hardware |
+| 10 | [Timer e interrupt](10-Timer-e-interrupt/) | Timer hardware, eventi, routine di interrupt e dati condivisi | Contare impulsi e aggiornare periodicamente il display | Wokwi + scheda |
+| 11 | [Memorie e persistenza](11-Memorie-e-persistenza/) | RAM e Flash, file, configurazioni persistenti, allocazione e limiti di scrittura | Salvare una soglia e ripristinarla al riavvio | Wokwi per la logica; scheda per verificare la persistenza dopo spegnimento |
+| 12 | [WiFi e HTTP](12-WiFi-e-HTTP/) | Connessione di rete, indirizzi IP, richieste e risposte HTTP, timeout | Inviare una misura a un servizio HTTP e gestire un errore di connessione | Wokwi con rete simulata + scheda |
+| 13 | [Messaggistica MQTT](13-Messaggistica-MQTT/) | Broker, topic, pubblicazione, sottoscrizione e riconnessione | Pubblicare misure e ricevere una nuova soglia tramite MQTT | Wokwi + scheda, con broker raggiungibile |
+| 14 | [Attività concorrenti e robustezza](14-Attivita-concorrenti-e-robustezza/) | Pianificazione cooperativa, coroutine MicroPython, introduzione ai task FreeRTOS in C++, risorse condivise | Integrare acquisizione, display e rete mantenendo reattivi i comandi | Wokwi + scheda |
+| 15 | [Risparmio energetico](15-Risparmio-energetico/) | Consumo, sospensione, deep sleep, risveglio e stato conservato | Acquisire una misura, trasmetterla e sospendere la scheda tra due rilevazioni | Scheda reale per risvegli e misure dei consumi |
+| 16 | [Progetto finale: stazione ambientale](16-Progetto-finale-stazione-ambientale/) | Integrazione di periferiche, memoria, rete e gestione degli errori | Realizzare una stazione con display, allarme locale, soglia persistente e telemetria MQTT | Wokwi per le parti supportate + collaudo su scheda |
 
 Le attività di rete introdurranno le dipendenze esterne e le condizioni di accesso ai servizi. Credenziali personali e chiavi non devono essere inserite nei materiali condivisi. L’esercitazione 15 costituisce anche un’estensione energetica del progetto finale.
 
@@ -144,8 +144,7 @@ Il confronto tra i linguaggi riguarderà anche gli strumenti: in C++ lo sketch v
 
 ```text
 README.md
-esercizi/
-└── 01-Introduzione-ESP32/
+├── 01-Introduzione-ESP32/
     ├── README.md
     ├── 01-Architettura-ESP32.md
     ├── 02-Ambienti-di-sviluppo.md
@@ -166,7 +165,12 @@ esercizi/
             │   └── diagram.json
             └── micropython/
                 ├── main.py
-                └── diagram.json
+            └── diagram.json
+├── 02-Uscite-digitali-e-LED/
+├── 03-Ingressi-digitali-e-pulsanti/
+└── strumenti/
+    ├── VERIFICHE.md
+    └── verifica_esempi.py
 ```
 
 - Le cartelle delle esercitazioni usano due cifre progressive e nomi separati da trattini.
