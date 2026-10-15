@@ -6,7 +6,7 @@ Un corso pratico per imparare a programmare un microcontrollore attraverso eserc
 
 Il percorso prevede esempi equivalenti in **MicroPython** e **C++ con il framework Arduino**, per confrontare sintassi, API e modalità di esecuzione. Si parte dalla simulazione in **Wokwi** e si passa alla scheda reale con **Arduino IDE** per C++ e gli strumenti MicroPython.
 
-> **Stato dei materiali:** le esercitazioni **01–03 sono disponibili**, con tredici guide e dieci esempi in C++ e MicroPython, ciascuno corredato dai circuiti Wokwi. Le esercitazioni 04–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; i controlli locali sono documentati nel [rapporto delle verifiche](strumenti/VERIFICHE.md).
+> **Stato dei materiali:** le esercitazioni **01–04 sono disponibili**, con sedici guide e quattordici esempi in C++ e MicroPython, ciascuno corredato dai circuiti Wokwi. Le esercitazioni 05–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; ogni esempio indica procedura e risultato atteso.
 
 ## 🎯 Obiettivi formativi
 
@@ -98,7 +98,7 @@ Caricare uno sketch Arduino e installare il firmware MicroPython modifica il sof
 
 ## 📚 Indice delle esercitazioni
 
-Le esercitazioni **01–03 sono disponibili**: i rispettivi link aprono cartelle con README, guide ed esempi. Le esercitazioni **04–16 sono pianificate**: i loro link indicano i percorsi futuri e non sono ancora navigabili.
+Le esercitazioni **01–04 sono disponibili**: i rispettivi link aprono cartelle con README, guide ed esempi. Le esercitazioni **05–16 sono pianificate**: i loro link indicano i percorsi futuri e non sono ancora navigabili.
 
 **Ambienti:** “Wokwi + scheda” indica attività progettate per entrambi gli ambienti, subordinatamente al supporto dei componenti scelti. Le verifiche elettriche, le misure dei consumi e le prove di affidabilità fisica richiedono hardware reale.
 
@@ -143,34 +143,28 @@ Il confronto tra i linguaggi riguarderà anche gli strumenti: in C++ lo sketch v
 ## 📁 Organizzazione prevista dei materiali
 
 ```text
-README.md
+.
+├── README.md
 ├── 01-Introduzione-ESP32/
+├── 02-Uscite-digitali-e-LED/
+├── 03-Ingressi-digitali-e-pulsanti/
+└── 04-Tempo-e-macchine-a-stati/
     ├── README.md
-    ├── 01-Architettura-ESP32.md
-    ├── 02-Ambienti-di-sviluppo.md
-    ├── 03-Primo-programma.md
+    ├── 01-Attese-e-tempo-trascorso.md
+    ├── 02-Temporizzazioni-indipendenti.md
+    ├── 03-Macchine-a-stati-e-semaforo.md
     └── esempi/
-        ├── 03_01-LED-lampeggiante/
-        │   ├── README.md
-        │   ├── cpp/
-        │   │   ├── cpp.ino
-        │   │   └── diagram.json
-        │   └── micropython/
-        │       ├── main.py
-        │       └── diagram.json
-        └── 03_02-Variazione-temporizzazione/
+        ├── 01_01-Attesa-bloccante/
+        ├── 01_02-Lampeggio-non-bloccante/
+        ├── 02_01-Due-temporizzazioni/
+        └── 03_01-Semaforo-con-richiesta/
             ├── README.md
             ├── cpp/
             │   ├── cpp.ino
             │   └── diagram.json
             └── micropython/
                 ├── main.py
-            └── diagram.json
-├── 02-Uscite-digitali-e-LED/
-├── 03-Ingressi-digitali-e-pulsanti/
-└── strumenti/
-    ├── VERIFICHE.md
-    └── verifica_esempi.py
+                └── diagram.json
 ```
 
 - Le cartelle delle esercitazioni usano due cifre progressive e nomi separati da trattini.
@@ -181,7 +175,7 @@ README.md
 - Nella struttura mostrata lo sketch si chiama `cpp.ino` per corrispondere alla cartella Arduino `cpp/`; il programma MicroPython usa `main.py`. Saranno aggiunti i moduli e i file delle dipendenze necessari, incluso `libraries.txt` per Wokwi quando richiesto.
 - Ogni guida termina con i collegamenti all’indice generale, all’indice dell’esercitazione e alle guide precedente e successiva, omettendo le direzioni non disponibili.
 
-La struttura illustrata è già applicata alle prime tre esercitazioni; le successive seguiranno la stessa convenzione.
+La struttura illustrata è già applicata alle prime quattro esercitazioni; le successive seguiranno la stessa convenzione.
 
 ## Verifica e documentazione delle prove
 

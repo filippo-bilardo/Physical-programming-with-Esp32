@@ -68,4 +68,4 @@ Guide, esempi e circuiti sono disponibili. **Le prove Wokwi e su hardware reale 
 
 - [📑 Indice generale](../README.md)
 - [⬅️ Esercitazione precedente](../02-Uscite-digitali-e-LED/README.md)
-- La prossima esercitazione, “Tempo e macchine a stati”, è pianificata e non ancora disponibile.
+- [➡️ Esercitazione successiva](../04-Tempo-e-macchine-a-stati/README.md)

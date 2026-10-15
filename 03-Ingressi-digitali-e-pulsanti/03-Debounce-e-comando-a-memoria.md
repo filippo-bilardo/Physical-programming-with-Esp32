@@ -135,3 +135,4 @@ Le attività sul codice e sulla logica sono eseguibili in Wokwi; montaggio, misu
 - [📑 Indice generale](../README.md)
 - [📂 Indice dell’esercitazione](./README.md)
 - [⬅️ Guida precedente](02-Polling-stato-e-fronti.md)
+- [➡️ Guida successiva](../04-Tempo-e-macchine-a-stati/01-Attese-e-tempo-trascorso.md)
