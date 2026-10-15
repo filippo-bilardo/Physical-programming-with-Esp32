@@ -6,7 +6,7 @@ Un corso pratico per imparare a programmare un microcontrollore attraverso eserc
 
 Il percorso prevede esempi equivalenti in **MicroPython** e **C++ con il framework Arduino**, per confrontare sintassi, API e modalità di esecuzione. Si parte dalla simulazione in **Wokwi** e si passa alla scheda reale con **Arduino IDE** per C++ e gli strumenti MicroPython.
 
-> **Stato dei materiali:** le esercitazioni **01–05 sono disponibili**, con venti guide e diciotto esempi in C++ e MicroPython, ciascuno corredato dai circuiti Wokwi. Le esercitazioni 06–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; ogni esempio indica procedura e risultato atteso.
+> **Stato dei materiali:** le esercitazioni **01–05, 07 e 09 sono disponibili**, con ventisette guide e ventisei esempi in C++ e MicroPython, ciascuno corredato dai circuiti Wokwi. Le esercitazioni 06, 08 e 10–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; ogni esempio indica procedura e risultato atteso.
 
 ## 🎯 Obiettivi formativi
 
@@ -56,7 +56,7 @@ La scheda di riferimento del percorso è una **ESP32 DevKit basata sul modulo ES
 | Uscite e ingressi digitali | LED, resistenze limitatrici di corrente, pulsanti e resistenze per le attività sui circuiti di ingresso |
 | Ingressi analogici | Potenziometro da 10 kΩ |
 | PWM e attuatori | LED, buzzer passivo e, come estensione, un servomotore con alimentazione adeguata |
-| I²C e sensori | Sensore di temperatura I²C da definire nell’esercitazione; display OLED SSD1306 con interfaccia I²C |
+| I²C e sensori | Sensore BMP180 e display OLED SSD1306 I²C 128×64, compatibili con 3,3 V |
 | SPI | Display TFT con interfaccia SPI, per esempio ILI9341 |
 | UART | Seconda ESP32 o adattatore USB-UART con livelli logici compatibili a 3,3 V |
 | Misure sul circuito | Multimetro; analizzatore logico facoltativo |
@@ -98,7 +98,7 @@ Caricare uno sketch Arduino e installare il firmware MicroPython modifica il sof
 
 ## 📚 Indice delle esercitazioni
 
-Le esercitazioni **01–05 sono disponibili**: i rispettivi link aprono cartelle con README, guide ed esempi. Le esercitazioni **06–16 sono pianificate**: i loro link indicano i percorsi futuri e non sono ancora navigabili.
+Le esercitazioni **01–05, 07 e 09 sono disponibili**: i rispettivi link aprono cartelle con README, guide ed esempi. Le esercitazioni **06, 08 e 10–16 sono pianificate**: i loro link indicano i percorsi futuri e non sono ancora navigabili. I prerequisiti delle 07 e 09 permettono di affrontarle dopo la 05, senza richiedere le due tappe intermedie ancora mancanti.
 
 **Ambienti:** “Wokwi + scheda” indica attività progettate per entrambi gli ambienti, subordinatamente al supporto dei componenti scelti. Le verifiche elettriche, le misure dei consumi e le prove di affidabilità fisica richiedono hardware reale.
 
@@ -149,23 +149,37 @@ Il confronto tra i linguaggi riguarderà anche gli strumenti: in C++ lo sketch v
 ├── 02-Uscite-digitali-e-LED/
 ├── 03-Ingressi-digitali-e-pulsanti/
 ├── 04-Tempo-e-macchine-a-stati/
-└── 05-Ingressi-analogici-e-ADC/
+├── 05-Ingressi-analogici-e-ADC/
+├── 07-Sensori-e-display-I2C/
+│   ├── README.md
+│   ├── 01-Bus-I2C-e-indirizzi.md
+│   ├── 02-Registri-e-temperatura-BMP180.md
+│   ├── 03-Display-OLED-e-framebuffer.md
+│   ├── 04-Temperatura-soglia-ed-errori.md
+│   └── esempi/
+│       ├── 01_01-Scanner-I2C/
+│       ├── 02_01-Temperatura-BMP180/
+│       ├── 03_01-Testo-su-OLED/
+│       └── 04_01-Temperatura-soglia-e-display/
+└── 09-Comunicazione-seriale-UART/
     ├── README.md
-    ├── 01-Potenziometro-e-ADC.md
-    ├── 02-Risoluzione-attenuazione-e-misura.md
-    ├── 03-Campionamento-rumore-e-media.md
-    ├── 04-Soglia-regolabile-e-isteresi.md
+    ├── 01-UART-collegamenti-e-loopback.md
+    ├── 02-Righe-buffer-e-timeout.md
+    ├── 03-Protocollo-LED-e-misure.md
     └── esempi/
-        ├── 01_01-Lettura-potenziometro/
-        ├── 02_01-Scala-percentuale/
-        ├── 03_01-Media-di-otto-campioni/
-        └── 04_01-Soglia-regolabile-con-isteresi/
+        ├── 01_01-Echo-byte-UART2/
+        ├── 01_02-Loopback-UART2/
+        ├── 02_01-Comandi-LED/
+        └── 03_01-Protocollo-LED-e-ADC/
             ├── README.md
+            ├── client_uart.py
             ├── cpp/
             │   ├── cpp.ino
+            │   ├── line_receiver.h
             │   └── diagram.json
             └── micropython/
                 ├── main.py
+                ├── line_receiver.py
                 └── diagram.json
 ```
 
@@ -177,7 +191,7 @@ Il confronto tra i linguaggi riguarderà anche gli strumenti: in C++ lo sketch v
 - Nella struttura mostrata lo sketch si chiama `cpp.ino` per corrispondere alla cartella Arduino `cpp/`; il programma MicroPython usa `main.py`. Saranno aggiunti i moduli e i file delle dipendenze necessari, incluso `libraries.txt` per Wokwi quando richiesto.
 - Ogni guida termina con i collegamenti all’indice generale, all’indice dell’esercitazione e alle guide precedente e successiva, omettendo le direzioni non disponibili.
 
-La struttura illustrata è già applicata alle prime cinque esercitazioni; le successive seguiranno la stessa convenzione.
+La struttura illustrata è applicata alle esercitazioni disponibili; le successive seguiranno la stessa convenzione. Quando servono driver o moduli locali, ogni esempio li include nelle proprie sottocartelle.
 
 ## Verifica e documentazione delle prove
 

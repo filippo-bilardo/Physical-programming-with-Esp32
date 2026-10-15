@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "author": "Corso Physical Programming with ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX2",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX2",
+      "$serialMonitor:TX",
+      "",
+      []
+    ]
+  ],
+  "serialMonitor": {
+    "display": "always",
+    "newline": "lf"
+  }
+}
