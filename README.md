@@ -6,7 +6,7 @@ Un corso pratico per imparare a programmare un microcontrollore attraverso eserc
 
 Il percorso prevede esempi equivalenti in **MicroPython** e **C++ con il framework Arduino**, per confrontare sintassi, API e modalità di esecuzione. Si parte dalla simulazione in **Wokwi** e si passa alla scheda reale con **Arduino IDE** per C++ e gli strumenti MicroPython.
 
-> **Stato dei materiali:** le esercitazioni **01–04 sono disponibili**, con sedici guide e quattordici esempi in C++ e MicroPython, ciascuno corredato dai circuiti Wokwi. Le esercitazioni 05–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; ogni esempio indica procedura e risultato atteso.
+> **Stato dei materiali:** le esercitazioni **01–05 sono disponibili**, con venti guide e diciotto esempi in C++ e MicroPython, ciascuno corredato dai circuiti Wokwi. Le esercitazioni 06–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; ogni esempio indica procedura e risultato atteso.
 
 ## 🎯 Obiettivi formativi
 
@@ -98,7 +98,7 @@ Caricare uno sketch Arduino e installare il firmware MicroPython modifica il sof
 
 ## 📚 Indice delle esercitazioni
 
-Le esercitazioni **01–04 sono disponibili**: i rispettivi link aprono cartelle con README, guide ed esempi. Le esercitazioni **05–16 sono pianificate**: i loro link indicano i percorsi futuri e non sono ancora navigabili.
+Le esercitazioni **01–05 sono disponibili**: i rispettivi link aprono cartelle con README, guide ed esempi. Le esercitazioni **06–16 sono pianificate**: i loro link indicano i percorsi futuri e non sono ancora navigabili.
 
 **Ambienti:** “Wokwi + scheda” indica attività progettate per entrambi gli ambienti, subordinatamente al supporto dei componenti scelti. Le verifiche elettriche, le misure dei consumi e le prove di affidabilità fisica richiedono hardware reale.
 
@@ -148,16 +148,18 @@ Il confronto tra i linguaggi riguarderà anche gli strumenti: in C++ lo sketch v
 ├── 01-Introduzione-ESP32/
 ├── 02-Uscite-digitali-e-LED/
 ├── 03-Ingressi-digitali-e-pulsanti/
-└── 04-Tempo-e-macchine-a-stati/
+├── 04-Tempo-e-macchine-a-stati/
+└── 05-Ingressi-analogici-e-ADC/
     ├── README.md
-    ├── 01-Attese-e-tempo-trascorso.md
-    ├── 02-Temporizzazioni-indipendenti.md
-    ├── 03-Macchine-a-stati-e-semaforo.md
+    ├── 01-Potenziometro-e-ADC.md
+    ├── 02-Risoluzione-attenuazione-e-misura.md
+    ├── 03-Campionamento-rumore-e-media.md
+    ├── 04-Soglia-regolabile-e-isteresi.md
     └── esempi/
-        ├── 01_01-Attesa-bloccante/
-        ├── 01_02-Lampeggio-non-bloccante/
-        ├── 02_01-Due-temporizzazioni/
-        └── 03_01-Semaforo-con-richiesta/
+        ├── 01_01-Lettura-potenziometro/
+        ├── 02_01-Scala-percentuale/
+        ├── 03_01-Media-di-otto-campioni/
+        └── 04_01-Soglia-regolabile-con-isteresi/
             ├── README.md
             ├── cpp/
             │   ├── cpp.ino
@@ -175,7 +177,7 @@ Il confronto tra i linguaggi riguarderà anche gli strumenti: in C++ lo sketch v
 - Nella struttura mostrata lo sketch si chiama `cpp.ino` per corrispondere alla cartella Arduino `cpp/`; il programma MicroPython usa `main.py`. Saranno aggiunti i moduli e i file delle dipendenze necessari, incluso `libraries.txt` per Wokwi quando richiesto.
 - Ogni guida termina con i collegamenti all’indice generale, all’indice dell’esercitazione e alle guide precedente e successiva, omettendo le direzioni non disponibili.
 
-La struttura illustrata è già applicata alle prime quattro esercitazioni; le successive seguiranno la stessa convenzione.
+La struttura illustrata è già applicata alle prime cinque esercitazioni; le successive seguiranno la stessa convenzione.
 
 ## Verifica e documentazione delle prove
 

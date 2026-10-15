@@ -155,4 +155,4 @@ Un'altra pressione nel verde successivo avrà ancora il vincolo del nuovo interv
 - [📑 Indice generale](../README.md)
 - [📂 Indice dell'esercitazione](README.md)
 - [⬅️ Guida precedente](02-Temporizzazioni-indipendenti.md)
-- La guida successiva appartiene all'esercitazione 05, ancora pianificata.
+- [➡️ Guida successiva](../05-Ingressi-analogici-e-ADC/01-Potenziometro-e-ADC.md)

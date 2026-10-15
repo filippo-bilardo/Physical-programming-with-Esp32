@@ -71,4 +71,4 @@ Controlli sul computer del **15 ottobre 2026**: sintassi dei quattro programmi P
 
 - [📑 Indice generale](../README.md)
 - [⬅️ Esercitazione precedente](../03-Ingressi-digitali-e-pulsanti/README.md)
-- La prossima esercitazione, “Ingressi analogici e ADC”, è pianificata e non ancora disponibile.
+- [➡️ Esercitazione successiva](../05-Ingressi-analogici-e-ADC/README.md)
