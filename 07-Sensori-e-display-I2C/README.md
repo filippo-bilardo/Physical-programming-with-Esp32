@@ -4,7 +4,7 @@ Collega due dispositivi sullo stesso bus, leggi una temperatura e visualizza mis
 
 ## Prerequisiti e obiettivi
 
-**Prerequisiti:** esercitazioni 01–05: ambiente, GPIO, temporizzazioni, ADC e isteresi. La 06 è ancora pianificata e non è necessaria per questi esempi.
+**Prerequisiti:** esercitazioni 01–05: ambiente, GPIO, temporizzazioni, ADC e isteresi. L’esercitazione 06 su output analogici e audio è disponibile, ma non è necessaria per questi esempi I²C.
 
 Al termine saprai:
 
@@ -78,6 +78,6 @@ Guide, sorgenti, driver e diagrammi sono disponibili. I controlli locali hanno s
 ## Navigazione del corso
 
 - [📑 Indice generale](../README.md)
-- [⬅️ Esercitazione precedente disponibile: 05](../05-Ingressi-analogici-e-ADC/README.md)
+- [⬅️ Esercitazione precedente: 06 · Output analogici e DAC](../06-Output-analogici-e-DAC/README.md)
 - [➡️ Esercitazione successiva disponibile: 09](../09-Comunicazione-seriale-UART/README.md)
-- Le esercitazioni 06 e 08 restano pianificate; la numerazione del corso è conservata.
+- L’esercitazione 08 resta pianificata; la numerazione del corso è conservata.

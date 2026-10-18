@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "author": "Corso Physical Programming with ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz1",
+      "top": 10,
+      "left": 300,
+      "attrs": {
+        "volume": "0.1",
+        "mode": "smooth"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 80,
+      "left": 230,
+      "attrs": {
+        "value": "1000"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "note1",
+      "top": 220,
+      "left": 0,
+      "attrs": {
+        "text": "DAC GPIO25: verifica su scheda reale.\nTester DC: rosso GPIO25, nero GND.\nIl testo non e uno strumento simulato."
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "esp:D25",
+      "r1:1",
+      "green",
+      []
+    ],
+    [
+      "r1:2",
+      "bz1:2",
+      "green",
+      []
+    ],
+    [
+      "bz1:1",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ]
+}

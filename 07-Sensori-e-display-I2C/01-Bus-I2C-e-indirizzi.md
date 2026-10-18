@@ -107,5 +107,5 @@ Scegli una sola risposta per domanda.
 
 - [📑 Indice generale](../README.md)
 - [📂 Indice dell'esercitazione](README.md)
-- [⬅️ Guida precedente disponibile](../05-Ingressi-analogici-e-ADC/04-Soglia-regolabile-e-isteresi.md)
+- [⬅️ Guida precedente](../06-Output-analogici-e-DAC/04-Melodie-e-audio-con-DAC.md)
 - [➡️ Guida successiva](02-Registri-e-temperatura-BMP180.md)

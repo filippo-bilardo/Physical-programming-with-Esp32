@@ -6,7 +6,7 @@ Un corso pratico per imparare a programmare un microcontrollore attraverso eserc
 
 Il percorso prevede esempi equivalenti in **MicroPython** e **C++ con il framework Arduino**, per confrontare sintassi, API e modalità di esecuzione. Si parte dalla simulazione in **Wokwi** e si passa alla scheda reale con **Arduino IDE** per C++ e gli strumenti MicroPython.
 
-> **Stato dei materiali:** le esercitazioni **01–05, 07 e 09 sono disponibili**, con ventisette guide e ventisei esempi in C++ e MicroPython, ciascuno corredato dai circuiti Wokwi. Le esercitazioni 06, 08 e 10–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; ogni esempio indica procedura e risultato atteso.
+> **Stato dei materiali:** le esercitazioni **01–07 e 09 sono disponibili**, con trentuno guide e trentuno esempi in C++ e MicroPython, ciascuno corredato dai diagrammi di collegamento. Le esercitazioni 08 e 10–16 sono pianificate e le relative cartelle non esistono ancora. Le prove in Wokwi e su hardware sono da eseguire; ogni esempio indica ambiente, procedura e risultato atteso. Le prove DAC dell’esercitazione 06 richiedono la scheda reale.
 
 ## 🎯 Obiettivi formativi
 
@@ -55,7 +55,7 @@ La scheda di riferimento del percorso è una **ESP32 DevKit basata sul modulo ES
 | Prime esercitazioni su scheda reale | ESP32, cavo USB dati compatibile, breadboard e cavetti |
 | Uscite e ingressi digitali | LED, resistenze limitatrici di corrente, pulsanti e resistenze per le attività sui circuiti di ingresso |
 | Ingressi analogici | Potenziometro da 10 kΩ |
-| PWM e attuatori | LED, buzzer passivo e, come estensione, un servomotore con alimentazione adeguata |
+| Output analogici, DAC e audio | Potenziometro da 10 kΩ, piccolo piezo passivo e resistenza da 1 kΩ; multimetro per il DAC |
 | I²C e sensori | Sensore BMP180 e display OLED SSD1306 I²C 128×64, compatibili con 3,3 V |
 | SPI | Display TFT con interfaccia SPI, per esempio ILI9341 |
 | UART | Seconda ESP32 o adattatore USB-UART con livelli logici compatibili a 3,3 V |
@@ -98,7 +98,7 @@ Caricare uno sketch Arduino e installare il firmware MicroPython modifica il sof
 
 ## 📚 Indice delle esercitazioni
 
-Le esercitazioni **01–05, 07 e 09 sono disponibili**: i rispettivi link aprono cartelle con README, guide ed esempi. Le esercitazioni **06, 08 e 10–16 sono pianificate**: i loro link indicano i percorsi futuri e non sono ancora navigabili. I prerequisiti delle 07 e 09 permettono di affrontarle dopo la 05, senza richiedere le due tappe intermedie ancora mancanti.
+Le esercitazioni **01–07 e 09 sono disponibili**: i rispettivi link aprono cartelle con README, guide ed esempi. Le esercitazioni **08 e 10–16 sono pianificate**: i loro link indicano i percorsi futuri e non sono ancora navigabili. La 09 non richiede di completare la 08.
 
 **Ambienti:** “Wokwi + scheda” indica attività progettate per entrambi gli ambienti, subordinatamente al supporto dei componenti scelti. Le verifiche elettriche, le misure dei consumi e le prove di affidabilità fisica richiedono hardware reale.
 
@@ -109,7 +109,7 @@ Le esercitazioni **01–05, 07 e 09 sono disponibili**: i rispettivi link aprono
 | 03 | [Ingressi digitali e pulsanti](03-Ingressi-digitali-e-pulsanti/) | GPIO in ingresso, pull-up, pull-down, lettura periodica e rimbalzi dei contatti | Comandare una luce con un pulsante e filtrare i rimbalzi | Wokwi + scheda |
 | 04 | [Tempo e macchine a stati](04-Tempo-e-macchine-a-stati/) | Attese bloccanti, contatori temporali, gestione del tempo e stato del programma | Costruire un semaforo con richiesta pedonale senza bloccare la lettura del pulsante | Wokwi + scheda |
 | 05 | [Ingressi analogici e ADC](05-Ingressi-analogici-e-ADC/) | Conversione analogico-digitale, risoluzione, campionamento e rumore | Regolare una soglia con un potenziometro e segnalare il superamento | Wokwi + scheda; misure reali con multimetro |
-| 06 | [PWM e attuatori](06-PWM-e-attuatori/) | Modulazione di larghezza d’impulso, frequenza, duty cycle e periferiche hardware | Variare luminosità e segnalazione sonora in base a un ingresso | Wokwi + scheda; alimentazione da verificare su hardware |
+| 06 | [Output analogici e DAC](06-Output-analogici-e-DAC/) | DAC a 8 bit, PWM, frequenza, duty cycle e generazione audio a campioni | Regolare una tensione DAC e riprodurre toni e melodie con un piezo passivo | Wokwi + scheda per PWM; scheda reale per DAC |
 | 07 | [Sensori e display I2C](07-Sensori-e-display-I2C/) | Bus I²C, indirizzi, registri dei dispositivi, librerie e gestione delle letture | Visualizzare una temperatura e una soglia su un display OLED | Wokwi + scheda, con componenti supportati |
 | 08 | [Bus SPI e display grafici](08-Bus-SPI-e-display-grafici/) | Clock, selezione del dispositivo, trasferimento seriale e memoria dei dati grafici | Mostrare su un display SPI un indicatore dell’ingresso analogico | Wokwi + scheda |
 | 09 | [Comunicazione seriale UART](09-Comunicazione-seriale-UART/) | Trasmissione asincrona, baud rate, buffer e formato dei messaggi | Comandare un LED e leggere misure attraverso un semplice protocollo testuale | Wokwi + scheda; collegamento a PC o seconda scheda su hardware |
@@ -150,6 +150,18 @@ Il confronto tra i linguaggi riguarderà anche gli strumenti: in C++ lo sketch v
 ├── 03-Ingressi-digitali-e-pulsanti/
 ├── 04-Tempo-e-macchine-a-stati/
 ├── 05-Ingressi-analogici-e-ADC/
+├── 06-Output-analogici-e-DAC/
+│   ├── README.md
+│   ├── 01-Uscite-analogiche-PWM-e-DAC.md
+│   ├── 02-DAC-e-regolazione-della-tensione.md
+│   ├── 03-Buzzer-passivo-e-PWM.md
+│   ├── 04-Melodie-e-audio-con-DAC.md
+│   └── esempi/
+│       ├── 01_01-Livelli-DAC/
+│       ├── 02_01-Potenziometro-e-DAC/
+│       ├── 03_01-Buzzer-con-PWM/
+│       ├── 04_01-Melodia-con-buzzer/
+│       └── 04_02-Audio-con-DAC/
 ├── 07-Sensori-e-display-I2C/
 │   ├── README.md
 │   ├── 01-Bus-I2C-e-indirizzi.md

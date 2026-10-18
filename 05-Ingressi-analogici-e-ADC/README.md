@@ -74,5 +74,4 @@ Controlli sul computer del **15 ottobre 2026**: sintassi dei quattro programmi P
 
 - [📑 Indice generale](../README.md)
 - [⬅️ Esercitazione precedente](../04-Tempo-e-macchine-a-stati/README.md)
-- La prossima esercitazione, “PWM e attuatori”, è pianificata e non ancora disponibile.
-- [➡️ Prossima esercitazione disponibile: 07 · Sensori e display I²C](../07-Sensori-e-display-I2C/README.md)
+- [➡️ Esercitazione successiva: 06 · Output analogici e DAC](../06-Output-analogici-e-DAC/README.md)

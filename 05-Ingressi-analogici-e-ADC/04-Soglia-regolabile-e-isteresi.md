@@ -129,5 +129,4 @@ Il ciclo acquisisce i due ingressi ogni 20 ms nominali e stampa un riepilogo ogn
 - [📑 Indice generale](../README.md)
 - [📂 Indice dell'esercitazione](README.md)
 - [⬅️ Guida precedente](03-Campionamento-rumore-e-media.md)
-- La guida successiva appartiene all'esercitazione 06, ancora pianificata.
-- [➡️ Prossima guida disponibile: bus I²C](../07-Sensori-e-display-I2C/01-Bus-I2C-e-indirizzi.md)
+- [➡️ Guida successiva: uscite analogiche, PWM e DAC](../06-Output-analogici-e-DAC/01-Uscite-analogiche-PWM-e-DAC.md)
