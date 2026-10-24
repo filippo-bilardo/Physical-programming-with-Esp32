@@ -1,5 +1,7 @@
 # Ultrasuoni · Distanza, allarme e scansione con ESP32
 
+## Introduzione teorica
+
 Il modulo **HC-SR04** emette un breve treno di ultrasuoni e misura il tempo necessario a ricevere una riflessione. Il segnale **TRIG**, alto per almeno 10 µs, avvia la misura; la durata HIGH di **ECHO** rappresenta il viaggio di andata e ritorno.
 
 La distanza si ricava da `d = tempo × velocità del suono / 2`. Negli sketch si usa l’approssimazione **distanza in cm = durata in µs / 58**, con risultato intero. Temperatura dell’aria, inclinazione, dimensioni e materiale dell’oggetto influenzano la lettura. L’intervallo nominale del modello standard è circa 2–400 cm: superfici troppo vicine, assorbenti o inclinate possono non produrre un eco utile.

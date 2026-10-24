@@ -1,5 +1,7 @@
 # PIR · Rilevamento del movimento con ESP32
 
+## Introduzione teorica
+
 Un sensore **PIR** (Passive InfraRed) rileva variazioni della radiazione infrarossa nel proprio campo visivo. La lente di Fresnel suddivide il campo in zone: attraversarle può generare un cambiamento rilevabile. Il modulo HC-SR501 elabora il segnale e presenta un’uscita digitale HIGH/LOW.
 
 Il PIR segnala una variazione, non misura distanza o temperatura e non garantisce il rilevamento di una persona ferma. La durata HIGH dipende anche dal temporizzatore e dal retrigger del modulo: il contatore degli esempi conta attivazioni, non persone.

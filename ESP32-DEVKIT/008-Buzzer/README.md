@@ -1,5 +1,7 @@
 # Buzzer · Toni, Morse e melodie con ESP32
 
+## Introduzione teorica
+
 Un **buzzer attivo** contiene un oscillatore: alimentandolo alla tensione prevista emette una frequenza sostanzialmente fissa. Un **piezo passivo** richiede invece un segnale alternato: `tone(pin, frequenza)` genera l’onda e `noTone(pin)` la interrompe. La frequenza determina l’altezza della nota; la durata determina il ritmo. Un altoparlante da 8 Ω non può sostituire direttamente il piezo sul GPIO.
 
 ## Materiale e collegamenti

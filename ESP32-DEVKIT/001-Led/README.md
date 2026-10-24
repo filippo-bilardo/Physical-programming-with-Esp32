@@ -4,7 +4,9 @@ La cartella raccoglie undici sketch per ESP32: dal lampeggio di un LED al contro
 
 Ogni sketch è nella propria sottocartella Arduino, direttamente sotto `001-Led`, senza una cartella intermedia `esempi`. Apri un solo `.ino` alla volta insieme alla sua cartella.
 
-## LED, corrente e PWM
+## Introduzione teorica
+
+### LED, corrente e PWM
 
 Un LED emette luce quando è polarizzato direttamente. Per il collegamento a un GPIO usa **sempre una resistenza in serie**: GPIO → 220 Ω → anodo; catodo → GND. Verifica la polarità del componente reale, senza affidarti soltanto alla lunghezza dei terminali se sono stati tagliati.
 

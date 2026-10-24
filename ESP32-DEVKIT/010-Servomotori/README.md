@@ -1,5 +1,7 @@
 # Servomotori · Posizione, velocità e controllo con ESP32
 
+## Introduzione teorica
+
 Un servomotore per modellismo integra motore, riduttore e circuito di controllo. Un **servo posizionale** interpreta la durata degli impulsi come posizione richiesta; un **servo a rotazione continua** la interpreta come direzione e velocità, con un impulso neutro di arresto.
 
 In questi esempi il periodo è circa **20 ms (50 Hz)** e l’intervallo configurato è **1000–2000 µs**. `write(0..180)` mappa i comandi su questo intervallo; i numeri non garantiscono altrettanti gradi fisici. Verifica limiti e centro del tuo servo, inizialmente senza carico. Il comando non restituisce la posizione reale.

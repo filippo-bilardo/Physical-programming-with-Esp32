@@ -1,6 +1,21 @@
 # FreeRTOS · Due task per due LED
 
+## Introduzione teorica
+
 FreeRTOS pianifica più attività: ogni task ha una propria funzione e un proprio stack. Sull’ESP32 classico a due core si può assegnare un task a un core con `xTaskCreatePinnedToCore()`. Le pause consentono allo scheduler di eseguire altre attività; due task non diventano automaticamente sincronizzati.
+
+
+### Task, scheduler e attese
+
+Lo **scheduler** sceglie quali task pronti eseguire in base a priorità e disponibilità dei core. Un task può essere in esecuzione, pronto oppure bloccato in attesa di un evento o di una temporizzazione. In Arduino-ESP32 una pausa con `delay()` sospende il task che la chiama e lascia tempo alle altre attività; un ciclo che controlla continuamente il tempo senza sospendersi occupa invece la CPU.
+
+La **concorrenza** permette a più attività di progredire nello stesso intervallo. Con due core è possibile anche l’esecuzione in parallelo. Assegnare i task a core distinti non garantisce che i loro comandi inizino nello stesso istante: nello sketch i task vengono creati in momenti diversi.
+
+Ogni task conserva le proprie variabili locali nello stack; variabili globali e periferiche possono essere condivise. Se più task modificano lo stesso dato o usano una risorsa comune, occorre coordinarli, per esempio con **mutex** o **code**. In questa prova ogni task comanda un LED diverso, mentre entrambi scrivono sulla seriale.
+
+### Collegamento con lo sketch
+
+`xTaskCreatePinnedToCore()` specifica funzione, nome, dimensione dello stack, parametro, priorità, handle e core. I due task hanno priorità 1; il valore 10000 indica byte di stack nell’implementazione ESP-IDF. Le funzioni dei task contengono un ciclo infinito perché devono continuare a eseguire la propria attività. I ritardi sono relativi alla chiamata: il periodo comprende anche il tempo delle istruzioni e non costituisce una temporizzazione precisa.
 
 ## Circuito e avvio
 

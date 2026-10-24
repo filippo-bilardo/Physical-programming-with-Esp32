@@ -1,5 +1,7 @@
 # Pulsanti · Livelli, eventi e debounce con ESP32
 
+## Introduzione teorica
+
 Un pulsante normalmente aperto chiude un contatto durante la pressione. Con `INPUT_PULLUP` il GPIO è alto a riposo e diventa basso quando il pulsante lo collega a GND. Un ingresso senza riferimento può risultare flottante; un pulsante a quattro piedini contiene due coppie già collegate internamente: usa contatti appartenenti alle due coppie diverse.
 
 Il **livello** indica se il contatto è premuto; un **fronte** è il cambiamento di livello; un **click** richiede una pressione e un rilascio. I contatti meccanici possono rimbalzare, producendo più cambiamenti ravvicinati. Il filtro temporale accetta un nuovo stato soltanto dopo almeno **50 ms di stabilità**: non basta aggiungere un ritardo e chiamarlo debounce.
