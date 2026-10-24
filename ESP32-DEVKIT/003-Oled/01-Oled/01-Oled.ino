@@ -11,10 +11,17 @@
 MyOled oled;
 
 void setup() {
-  oled.begin();
+  Serial.begin(115200);
+  if (!oled.begin()) {
+    Serial.println("ERR OLED: controlla alimentazione e indirizzo 0x3C");
+    return;
+  }
   oled.hello();
+#ifdef MYOLED_DEMO
   oled.demo();
+#endif
 }
 
-void loop() { 
+void loop() {
+  delay(1);
 }

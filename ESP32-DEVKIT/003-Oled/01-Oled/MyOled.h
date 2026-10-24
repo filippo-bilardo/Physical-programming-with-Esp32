@@ -78,11 +78,11 @@ class MyOled
 {
   public:
   
-    void begin();
+    bool begin();
     void hello();
     void lf_println(int linea);
-    void lf_print(char *text);
-    void println(char *text, int textsize);
+    void lf_print(const char *text);
+    void println(const char *text, int textsize);
     #ifdef MYOLED_DEMO
     void demo();
     #endif
@@ -107,4 +107,4 @@ class MyOled
     #endif
 };
 //------------------------------------------------------------------------------------------
-#endif MYOLED_H
+#endif // MYOLED_H

@@ -3,15 +3,20 @@
 //------------------------------------------------------------------------------------------
 #include "MyOled.h"
 
-Adafruit_SSD1306 disp(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+Adafruit_SSD1306 disp(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET, 100000, 100000);
 
 //------------------------------------------------------------------------------------------
-void MyOled::begin() {
-  // initialize and clear display
-  disp.begin(SSD1306_SWITCHCAPVCC, OLED_I2C);
+bool MyOled::begin() {
+  if (!Wire.begin(21, 22, 100000)) return false;
+  Wire.setTimeOut(50);
+  Wire.beginTransmission(OLED_I2C);
+  if (Wire.endTransmission() != 0) return false;
+  if (!disp.begin(SSD1306_SWITCHCAPVCC, OLED_I2C, true, false)) return false;
   disp.clearDisplay();
+  disp.setTextColor(SSD1306_WHITE);
   disp.display();
   delay(500);
+  return true;
 }
 
 #ifdef MYOLED_DEMO
@@ -353,7 +358,7 @@ void MyOled::lf_println(int linea) {
   disp.println(linea);
   disp.display();
 }
-void MyOled::lf_print(char *text) {
+void MyOled::lf_print(const char *text) {
   
   disp.clearDisplay();
   disp.setTextSize(1);
@@ -364,7 +369,7 @@ void MyOled::lf_print(char *text) {
   disp.println(text);
   disp.display();
 }
-void MyOled::println(char *text, int textsize) {
+void MyOled::println(const char *text, int textsize) {
   
   disp.clearDisplay();
   disp.setCursor(0,0);
