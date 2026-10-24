@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "author": "Corso ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn0",
+      "top": 65,
+      "left": 260,
+      "attrs": {
+        "color": "blue"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "btn0:1.l",
+      "esp:D23",
+      "green",
+      []
+    ],
+    [
+      "btn0:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ]
+}

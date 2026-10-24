@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "author": "Corso ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn0",
+      "top": 65,
+      "left": 260,
+      "attrs": {
+        "color": "blue"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led0",
+      "top": 130,
+      "left": 260,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r0",
+      "top": 195,
+      "left": 260,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": 260,
+      "left": 260,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 325,
+      "left": 260,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir0",
+      "top": 390,
+      "left": 260,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz",
+      "top": 455,
+      "left": 260,
+      "attrs": {
+        "volume": "0.1"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rbz",
+      "top": 520,
+      "left": 260,
+      "attrs": {
+        "value": "1000"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "btn0:1.l",
+      "esp:D22",
+      "green",
+      []
+    ],
+    [
+      "btn0:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D18",
+      "r0:1",
+      "green",
+      []
+    ],
+    [
+      "r0:2",
+      "led0:A",
+      "green",
+      []
+    ],
+    [
+      "led0:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D19",
+      "r1:1",
+      "green",
+      []
+    ],
+    [
+      "r1:2",
+      "led1:A",
+      "green",
+      []
+    ],
+    [
+      "led1:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pir0:VCC",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "pir0:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pir0:OUT",
+      "esp:D23",
+      "green",
+      []
+    ],
+    [
+      "esp:D27",
+      "rbz:1",
+      "green",
+      []
+    ],
+    [
+      "rbz:2",
+      "bz:2",
+      "green",
+      []
+    ],
+    [
+      "bz:1",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ]
+}

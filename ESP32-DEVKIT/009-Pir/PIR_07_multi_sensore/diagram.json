@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "author": "Corso ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led0",
+      "top": 65,
+      "left": 260,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r0",
+      "top": 130,
+      "left": 260,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": 195,
+      "left": 260,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 260,
+      "left": 260,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led2",
+      "top": 325,
+      "left": 260,
+      "attrs": {
+        "color": "blue"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 390,
+      "left": 260,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir0",
+      "top": 455,
+      "left": 260,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir1",
+      "top": 520,
+      "left": 260,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir2",
+      "top": 585,
+      "left": 260,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "esp:D18",
+      "r0:1",
+      "green",
+      []
+    ],
+    [
+      "r0:2",
+      "led0:A",
+      "green",
+      []
+    ],
+    [
+      "led0:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D19",
+      "r1:1",
+      "green",
+      []
+    ],
+    [
+      "r1:2",
+      "led1:A",
+      "green",
+      []
+    ],
+    [
+      "led1:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D25",
+      "r2:1",
+      "green",
+      []
+    ],
+    [
+      "r2:2",
+      "led2:A",
+      "green",
+      []
+    ],
+    [
+      "led2:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pir0:VCC",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "pir0:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pir0:OUT",
+      "esp:D23",
+      "green",
+      []
+    ],
+    [
+      "pir1:VCC",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "pir1:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pir1:OUT",
+      "esp:D22",
+      "green",
+      []
+    ],
+    [
+      "pir2:VCC",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "pir2:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pir2:OUT",
+      "esp:D21",
+      "green",
+      []
+    ]
+  ]
+}

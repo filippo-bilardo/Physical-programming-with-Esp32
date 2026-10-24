@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "author": "Corso ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot0",
+      "top": 65,
+      "left": 260,
+      "attrs": {
+        "value": "512"
+      }
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servo0",
+      "top": 130,
+      "left": 260,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "pot0:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "pot0:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pot0:SIG",
+      "esp:D34",
+      "green",
+      []
+    ],
+    [
+      "servo0:PWM",
+      "esp:D18",
+      "green",
+      []
+    ],
+    [
+      "servo0:V+",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "servo0:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ]
+}

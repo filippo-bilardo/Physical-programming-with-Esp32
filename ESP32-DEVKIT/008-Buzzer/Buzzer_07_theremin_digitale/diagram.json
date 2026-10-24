@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "author": "Corso ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "bz",
+      "top": 65,
+      "left": 260,
+      "attrs": {
+        "volume": "0.1"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rbz",
+      "top": 130,
+      "left": 260,
+      "attrs": {
+        "value": "1000"
+      }
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "us",
+      "top": 195,
+      "left": 260,
+      "attrs": {
+        "distance": "100"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rtop",
+      "top": 260,
+      "left": 260,
+      "attrs": {
+        "value": "10000"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rbottom",
+      "top": 325,
+      "left": 260,
+      "attrs": {
+        "value": "15000"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "esp:D27",
+      "rbz:1",
+      "green",
+      []
+    ],
+    [
+      "rbz:2",
+      "bz:2",
+      "green",
+      []
+    ],
+    [
+      "bz:1",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "us:VCC",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "us:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "us:TRIG",
+      "esp:D25",
+      "green",
+      []
+    ],
+    [
+      "us:ECHO",
+      "rtop:1",
+      "green",
+      []
+    ],
+    [
+      "rtop:2",
+      "esp:D26",
+      "green",
+      []
+    ],
+    [
+      "rtop:2",
+      "rbottom:1",
+      "green",
+      []
+    ],
+    [
+      "rbottom:2",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ]
+}

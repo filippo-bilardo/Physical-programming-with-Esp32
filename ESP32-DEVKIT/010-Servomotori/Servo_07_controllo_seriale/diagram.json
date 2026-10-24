@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "author": "Corso ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servo0",
+      "top": 65,
+      "left": 260,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "servo0:PWM",
+      "esp:D18",
+      "green",
+      []
+    ],
+    [
+      "servo0:V+",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "servo0:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ]
+}

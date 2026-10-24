@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "author": "Corso ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir0",
+      "top": 65,
+      "left": 260,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "pir0:VCC",
+      "esp:VIN",
+      "red",
+      []
+    ],
+    [
+      "pir0:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pir0:OUT",
+      "esp:D23",
+      "green",
+      []
+    ]
+  ]
+}

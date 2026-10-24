@@ -1,0 +1,21 @@
+# 04-Movimenti-robot
+
+Usa due comandi indipendenti per ruota sinistra e destra: avanzamento, curve e rotazione, separati da stop. Pulsante 23 mantenuto per abilitare.
+
+## Preparazione
+
+Usa un driver L298N e alimentazione motori esterna, con massa comune; non collegare i motori ai GPIO. Prima di alimentare segui la [tabella completa dei collegamenti e dei jumper](../README.md#piedinatura-del-progetto).
+
+Consulta la [guida della raccolta](../README.md) per teoria, circuito specifico e dipendenze.
+
+Apri [04-Movimenti-robot.ino](04-Movimenti-robot.ino) in Arduino IDE dalla cartella attuale. Seleziona scheda ESP32 e porta corrette; carica un solo sketch alla volta. Per i messaggi usa il monitor seriale a 115200 baud, quando previsto. Mantieni nella cartella anche gli eventuali file `.h` e `.cpp`.
+
+È incluso [diagram.json](diagram.json): copialo insieme al programma nel progetto Wokwi corrispondente, seguendo la guida della raccolta.
+
+## Prova ed esercizio
+
+Verifica separatamente il verso delle ruote e modifica una curva.
+
+Registra versione del core o firmware, collegamenti e risultato osservato; lo schema simulato non verifica alimentazione e correnti reali.
+
+[Torna alla raccolta](../README.md).
