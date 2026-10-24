@@ -1,8 +1,6 @@
 /*
- * Importato da filippo-bilardo/ROBOTICA, Led/LED_01_lampeggio_semplice.ino.
- * Revisione locale di riferimento: be14c4db788f02186c714e241a8c2fa19b975b7d.
- * Adattamento ESP32 WROOM-32 del 24/10/2026; dettagli in ../PROVENIENZA.md.
- * Licenza del sorgente: GNU AGPLv3, vedi LICENSE nella radice del repository.
+ * Esempio per ESP32 WROOM-32.
+ * Licenza GNU AGPLv3: vedi LICENSE nella radice del repository.
  */
 #include <Arduino.h>
 

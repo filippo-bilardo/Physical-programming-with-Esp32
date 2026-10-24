@@ -1,6 +1,6 @@
 # LED · Blink, PWM e comandi con ESP32
 
-La cartella raccoglie il Blink ESP32 preesistente e **dieci sketch importati e adattati da [ROBOTICA/Led](https://github.com/filippo-bilardo/ROBOTICA/tree/main/Led)**. I sorgenti sono stati letti dalla copia locale `/ws/ROBOTICA` indicata dall’utente: la revisione e gli adattamenti sono documentati in [PROVENIENZA.md](PROVENIENZA.md).
+La cartella raccoglie undici sketch per ESP32: dal lampeggio di un LED al controllo della luminosità, ai colori RGB e ai comandi seriali.
 
 Ogni sketch è nella propria sottocartella Arduino, direttamente sotto `001-Led`, senza una cartella intermedia `esempi`. Apri un solo `.ino` alla volta insieme alla sua cartella.
 
@@ -12,7 +12,7 @@ La resistenza limita la corrente. Con 3,3 V ideali e un LED rosso con caduta di 
 
 `digitalWrite()` seleziona acceso o spento. Il PWM alterna rapidamente i due livelli e cambia la frazione di tempo in cui il LED è acceso. Gli esempi PWM usano `analogWrite()` con scala **0–255**, risoluzione **8 bit** e frequenza richiesta **5 kHz**. Questo è PWM, non una tensione continua prodotta dal DAC; luminosità percepita e valore numerico non sono necessariamente proporzionali.
 
-La scheda di riferimento è **ESP32 classico WROOM-32**, per esempio DOIT ESP32 DEVKIT V1, con logica a **3,3 V**. I pin del materiale Arduino originario sono stati adattati: non collegare LED ai GPIO 6–11 del modulo ESP32, normalmente impiegati dalla Flash. Non applicare 5 V ai GPIO.
+La scheda di riferimento è **ESP32 classico WROOM-32**, per esempio DOIT ESP32 DEVKIT V1, con logica a **3,3 V**. Per i collegamenti usa i GPIO indicati nella tabella: non collegare LED ai GPIO 6–11 del modulo ESP32, normalmente impiegati dalla Flash. Non applicare 5 V ai GPIO.
 
 ## Materiali e piedinatura
 
@@ -27,7 +27,7 @@ Servono scheda ESP32 e cavo USB dati, breadboard, cavetti, LED e resistenze da *
 | LED_06 | R su GPIO 18, G su 19, B su 21; tre resistenze e catodo comune a GND |
 | LED_07 | Sei LED nell’ordine GPIO 18, 19, 21, 22, 25, 26; una resistenza per LED |
 
-Monta e modifica il circuito a scheda scollegata. I numeri sono GPIO, non posizioni fisiche dei pin. Il LED integrato sul GPIO 2 non è presente su tutte le DevKit: verifica il modello reale. Gli esempi importati usano il LED **esterno sul GPIO 18**, anche se la scheda ha un LED integrato.
+Monta e modifica il circuito a scheda scollegata. I numeri sono GPIO, non posizioni fisiche dei pin. Il LED integrato sul GPIO 2 non è presente su tutte le DevKit: verifica il modello reale. Gli esempi LED_01–LED_10 usano il LED **esterno sul GPIO 18**, anche se la scheda ha un LED integrato.
 
 ![Illustrazione del Blink ESP32 preesistente](LedBlink.png)
 
@@ -110,15 +110,14 @@ Il diagramma del Blink preesistente mostra anche un LED esterno sul GPIO 2: può
 
 ## Stato dei materiali e delle verifiche
 
-Sono disponibili lo sketch preesistente, dieci adattamenti e undici diagrammi. Controlli locali del **24 ottobre 2026**: gli undici sketch sono stati compilati con g++ e API sostituite, senza avvisi; sono state superate **33 esecuzioni**. I casi comprendono sequenze digitali e PWM, pulsante, respiro, colori RGB, andata/ritorno dei sei LED, metodi della classe, timer e ritorno a zero, ricezione durante il lampeggio, comandi frammentati, LF/CRLF, righe non valide o troppo lunghe e ripristino della luminosità dopo il lampeggio seriale.
+Sono disponibili undici sketch e undici diagrammi. Controlli locali del **24 ottobre 2026**: gli undici sketch sono stati compilati con g++ e API sostituite, senza avvisi; sono state superate **33 esecuzioni**. I casi comprendono sequenze digitali e PWM, pulsante, respiro, colori RGB, andata/ritorno dei sei LED, metodi della classe, timer e ritorno a zero, ricezione durante il lampeggio, comandi frammentati, LF/CRLF, righe non valide o troppo lunghe e ripristino della luminosità dopo il lampeggio seriale.
 
-Sono stati verificati gli undici diagrammi, pin e resistenze, collegamenti locali, corrispondenza fra nomi dei file e cartelle, completezza dell’importazione e identità della licenza. Lo sketch Blink preesistente è stato spostato senza cambiare i byte del sorgente. Il modello temporale usa la larghezza nativa di `unsigned long` del computer e non emula la CPU o i tempi reali delle periferiche.
+Sono stati verificati gli undici diagrammi, pin e resistenze, collegamenti locali, corrispondenza fra nomi dei file e cartelle. Il modello temporale usa la larghezza nativa di `unsigned long` del computer e non emula la CPU o i tempi reali delle periferiche.
 
 **Compilazione con core ESP32 reale, esecuzione Wokwi e collaudo hardware sono da eseguire.** I controlli sul computer con API sostituite non provano corrente, segnale PWM reale, resa luminosa o buffer UART della scheda.
 
-## Provenienza e riferimenti
+## Riferimenti e navigazione
 
-- [Provenienza, revisione sorgente e adattamenti](PROVENIENZA.md).
 - [Licenza GNU AGPLv3](../../LICENSE).
 - [Espressif: GPIO e pin riservati](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/gpio.html).
 - [Espressif: PWM e analogWrite](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/ledc.html).
