@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "author": "Corso Physical Programming with ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led0",
+      "top": 20,
+      "left": 250,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rled0",
+      "top": 100,
+      "left": 250,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": 20,
+      "left": 300,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rled1",
+      "top": 100,
+      "left": 300,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led2",
+      "top": 20,
+      "left": 350,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rled2",
+      "top": 100,
+      "left": 350,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led3",
+      "top": 20,
+      "left": 400,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rled3",
+      "top": 100,
+      "left": 400,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led4",
+      "top": 20,
+      "left": 450,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rled4",
+      "top": 100,
+      "left": 450,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led5",
+      "top": 20,
+      "left": 500,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rled5",
+      "top": 100,
+      "left": 500,
+      "attrs": {
+        "value": "220"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "esp:D18",
+      "rled0:1",
+      "green",
+      []
+    ],
+    [
+      "rled0:2",
+      "led0:A",
+      "green",
+      []
+    ],
+    [
+      "led0:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D19",
+      "rled1:1",
+      "green",
+      []
+    ],
+    [
+      "rled1:2",
+      "led1:A",
+      "green",
+      []
+    ],
+    [
+      "led1:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D21",
+      "rled2:1",
+      "green",
+      []
+    ],
+    [
+      "rled2:2",
+      "led2:A",
+      "green",
+      []
+    ],
+    [
+      "led2:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D22",
+      "rled3:1",
+      "green",
+      []
+    ],
+    [
+      "rled3:2",
+      "led3:A",
+      "green",
+      []
+    ],
+    [
+      "led3:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D25",
+      "rled4:1",
+      "green",
+      []
+    ],
+    [
+      "rled4:2",
+      "led4:A",
+      "green",
+      []
+    ],
+    [
+      "led4:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D26",
+      "rled5:1",
+      "green",
+      []
+    ],
+    [
+      "rled5:2",
+      "led5:A",
+      "green",
+      []
+    ],
+    [
+      "led5:C",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ]
+}

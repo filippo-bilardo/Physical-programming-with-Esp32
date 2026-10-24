@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "author": "Corso Physical Programming with ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "red",
+      "top": 20,
+      "left": 250,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rred",
+      "top": 100,
+      "left": 250,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "yellow",
+      "top": 20,
+      "left": 300,
+      "attrs": {
+        "color": "yellow"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "ryellow",
+      "top": 100,
+      "left": 300,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "green",
+      "top": 20,
+      "left": 350,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rgreen",
+      "top": 100,
+      "left": 350,
+      "attrs": {
+        "value": "220"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "esp:D18",
+      "rred:1",
+      "green",
+      []
+    ],
+    [
+      "rred:2",
+      "red:A",
+      "green",
+      []
+    ],
+    [
+      "red:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D19",
+      "ryellow:1",
+      "green",
+      []
+    ],
+    [
+      "ryellow:2",
+      "yellow:A",
+      "green",
+      []
+    ],
+    [
+      "yellow:C",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D21",
+      "rgreen:1",
+      "green",
+      []
+    ],
+    [
+      "rgreen:2",
+      "green:A",
+      "green",
+      []
+    ],
+    [
+      "green:C",
+      "esp:GND.1",
+      "black",
+      []
+    ]
+  ]
+}

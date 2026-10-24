@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "author": "Corso Physical Programming with ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-rgb-led",
+      "id": "rgb1",
+      "top": 20,
+      "left": 280,
+      "attrs": {
+        "common": "cathode"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rR",
+      "top": 100,
+      "left": 250,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rG",
+      "top": 100,
+      "left": 300,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "rB",
+      "top": 100,
+      "left": 350,
+      "attrs": {
+        "value": "220"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "rgb1:COM",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "esp:D18",
+      "rR:1",
+      "green",
+      []
+    ],
+    [
+      "rR:2",
+      "rgb1:R",
+      "green",
+      []
+    ],
+    [
+      "esp:D19",
+      "rG:1",
+      "green",
+      []
+    ],
+    [
+      "rG:2",
+      "rgb1:G",
+      "green",
+      []
+    ],
+    [
+      "esp:D21",
+      "rB:1",
+      "green",
+      []
+    ],
+    [
+      "rB:2",
+      "rgb1:B",
+      "green",
+      []
+    ]
+  ]
+}

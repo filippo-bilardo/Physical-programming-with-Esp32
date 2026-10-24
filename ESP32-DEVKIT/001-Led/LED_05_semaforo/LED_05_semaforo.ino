@@ -1,0 +1,65 @@
+/*
+ * Importato da filippo-bilardo/ROBOTICA, Led/LED_05_semaforo.ino.
+ * Revisione locale di riferimento: be14c4db788f02186c714e241a8c2fa19b975b7d.
+ * Adattamento ESP32 WROOM-32 del 24/10/2026; dettagli in ../PROVENIENZA.md.
+ * Licenza del sorgente: GNU AGPLv3, vedi LICENSE nella radice del repository.
+ */
+#include <Arduino.h>
+
+/*
+ * LED_05_semaforo.ino
+ *
+ * Questo sketch simula il funzionamento di un semaforo utilizzando tre LED
+ * (rosso, giallo e verde).
+ *
+ * Circuito:
+ * - LED rosso collegato al GPIO 18 e GND attraverso una resistenza da 220 ohm
+ * - LED giallo collegato al GPIO 19 e GND attraverso una resistenza da 220 ohm
+ * - LED verde collegato al GPIO 21 e GND attraverso una resistenza da 220 ohm
+ *
+ * Creato il: 2023
+ */
+
+const int RED_PIN = 18;     // Pin a cui è collegato il LED rosso
+const int YELLOW_PIN = 19;  // Pin a cui è collegato il LED giallo
+const int GREEN_PIN = 21;    // Pin a cui è collegato il LED verde
+
+void setup() {
+  // Inizializza i pin come output
+  pinMode(RED_PIN, OUTPUT);
+  pinMode(YELLOW_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
+
+  // Inizia con tutti i LED spenti
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(YELLOW_PIN, LOW);
+  digitalWrite(GREEN_PIN, LOW);
+}
+
+void loop() {
+  // Fase 1: Rosso acceso (Stop)
+  digitalWrite(RED_PIN, HIGH);
+  digitalWrite(YELLOW_PIN, LOW);
+  digitalWrite(GREEN_PIN, LOW);
+  delay(3000);  // Attendi 3 secondi
+
+  // Fase 2: Rosso e giallo accesi (Preparati a partire)
+  digitalWrite(RED_PIN, HIGH);
+  digitalWrite(YELLOW_PIN, HIGH);
+  digitalWrite(GREEN_PIN, LOW);
+  delay(1000);  // Attendi 1 secondo
+
+  // Fase 3: Verde acceso (Via libera)
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(YELLOW_PIN, LOW);
+  digitalWrite(GREEN_PIN, HIGH);
+  delay(3000);  // Attendi 3 secondi
+
+  // Fase 4: Giallo acceso (Preparati a fermarti)
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(YELLOW_PIN, HIGH);
+  digitalWrite(GREEN_PIN, LOW);
+  delay(1000);  // Attendi 1 secondo
+
+  // Torna all'inizio del loop
+}
