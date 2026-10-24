@@ -35,6 +35,40 @@ I ≈ (3,3 − 2,0) / 220 ≈ 0,0059 A = 5,9 mA
 
 Il PWM regola la frazione di tempo in cui l’uscita è alta, modificando la luminosità media. Il drive strength modifica invece le caratteristiche elettriche dell’uscita durante il pilotaggio. La resistenza rimane necessaria anche quando si usa il PWM, perché limita la corrente durante ogni impulso.
 
+### Modello equivalente dell’uscita sotto carico
+
+Per interpretare le misure si può rappresentare lo stadio HIGH con un generatore ideale e una resistenza interna equivalente `R_out`. È un modello locale e approssimato dei transistor, non una resistenza fisica costante valida a qualsiasi corrente.
+
+```text
+3,3 V ideali → R_out equivalente → GPIO → R_esterna 220 Ω → LED → GND
+```
+
+Con questo modello la corrente sarebbe:
+
+```text
+I ≈ (3,3 − V_F) / (R_out + R_esterna)
+```
+
+Per esempio, assumendo soltanto per il calcolo `R_out = 100 Ω` e `V_F = 2 V`, si ottengono circa 4,1 mA. Con `R_out = 30 Ω` si ottengono circa 5,2 mA. **I due valori di resistenza interna sono ipotesi illustrative, senza corrispondenza assegnata alle costanti DRIVE**. Mostrano perché rafforzare l’uscita può aumentare la corrente e perché una resistenza esterna molto maggiore di `R_out` riduce la differenza fra i livelli.
+
+### Capacità del collegamento e velocità dei fronti
+
+Un filo, un ingresso collegato e una sonda presentano capacità elettrica. Per passare da LOW a HIGH occorre caricarla; per tornare a LOW occorre scaricarla. Nel modello RC il tempo caratteristico è `τ = R × C`: aumentando capacità o impedenza del pilotaggio, la transizione diventa più lenta.
+
+Un pilotaggio più forte può accelerare il fronte, ma fili e piste introducono anche induttanza e riflessioni. Fronti molto rapidi possono produrre sovraelongazioni e disturbi. Il livello adatto si sceglie quindi rispetto al carico e alla velocità del segnale. Le fasi di due secondi del LED non permettono di vedere transizioni elettriche che avvengono su scale temporali molto più brevi.
+
+### Sorgente, assorbimento e riferimento di misura
+
+Nel ramo GPIO → resistenza → LED → GND il GPIO fornisce corrente quando è HIGH. Un circuito con LED e resistenza verso l’alimentazione può invece richiedere assorbimento di corrente quando il GPIO è LOW e avere logica di accensione invertita. La polarità del comando e la funzione elettrica vanno lette sul circuito effettivo.
+
+Misurare il GPIO rispetto a GND rileva la tensione d’uscita; misurare fra i due terminali della resistenza rileva la sua caduta, da cui si ricava la corrente. Sono misure diverse. Per esempio, 1,1 V sulla resistenza da 220 Ω corrispondono a 5 mA, mentre 3,0 V sul GPIO non permettono da soli di conoscere la corrente senza considerare LED e resistenza.
+
+### Come confrontare correttamente i livelli
+
+Mantieni invariati LED, resistenza, alimentazione, strumento e cablaggio; cambia soltanto il livello di pilotaggio. Registra tensione sul GPIO, tensione sulla resistenza e corrente calcolata. Ripeti la misura per distinguere differenze riproducibili da oscillazioni dello strumento o dal riscaldamento del componente.
+
+La tolleranza della resistenza e la risoluzione del voltmetro introducono incertezza: risultati vicini possono non essere distinguibili con lo strumento usato. Una scritta seriale conferma soltanto il percorso del software; una misura elettrica verifica ciò che accade sul ramo. Questi criteri spiegano anche perché la luminosità simulata non è una caratterizzazione del pilotaggio reale.
+
 ## Materiali e collegamenti
 
 Servono ESP32 classico WROOM-32, per esempio DOIT ESP32 DEVKIT V1, un LED, una resistenza da **220 Ω**, cavetti e cavo USB dati.

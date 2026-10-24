@@ -31,6 +31,48 @@ Il modulo usa **SDA** per i dati e **SCL** per il clock, più alimentazione e ma
 
 Uno scanner rileva un ACK, cioè una risposta all’indirizzo: non identifica con certezza il controller e non dimostra che un’immagine sia visibile. Il trasferimento completo di 1024 byte richiede almeno circa 92 ms a 100 kHz, più i comandi. `display()` è un’operazione sincrona; anche un programma basato su `millis()` deve considerare questo costo.
 
+### Pixel, bitmap e pagine di memoria
+
+Una bitmap monocromatica associa un bit a ogni pixel: 0 e 1 rappresentano i due stati possibili. Nel framebuffer della libreria SSD1306 i byte raggruppano colonne di otto pixel verticali. Per 64 righe ci sono otto gruppi, chiamati pagine; la libreria traduce coordinate, testo e forme nella disposizione dei bit richiesta dal controller. [Implementazione Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306/blob/master/Adafruit_SSD1306.cpp).
+
+Il framebuffer nell’ESP32 e la memoria grafica del display sono due memorie distinte. Se modifichi una cifra in RAM e non chiami `display()`, il pannello continua a mostrare l’immagine precedente. Se cancelli soltanto un’area troppo piccola, possono restare pixel della cifra vecchia: passare da 100 a 9 rende evidente il problema.
+
+```mermaid
+flowchart LR
+    A[Valori e stato del programma] --> B[Disegno nel framebuffer ESP32]
+    B --> C[Trasferimento I2C con display]
+    C --> D[Memoria grafica SSD1306]
+    D --> E[Pixel visibili]
+```
+
+La freccia del trasferimento richiede tempo: il disegno in RAM e la comunicazione sul bus sono due fasi diverse del lavoro.
+
+### Indirizzamento I²C e pull-up
+
+I²C usa linee condivise: i dispositivi possono portarle a livello basso, mentre i pull-up le riportano alte quando vengono rilasciate. La corretta tensione dei pull-up è quindi parte del collegamento elettrico. La capacità di fili e moduli rallenta la risalita del segnale: un bus funzionante con fili corti non garantisce lo stesso risultato con collegamenti molto più lunghi.
+
+L’indirizzo a 7 bit identifica il dispositivo sul bus. Durante una transazione il bit di lettura/scrittura viene aggiunto al byte di indirizzamento: il valore da passare alla libreria rimane quello a 7 bit, per esempio `0x3C`. Il controller distingue inoltre comandi di configurazione e dati grafici; è il driver a costruire questa comunicazione. [Datasheet SSD1306, interfaccia I²C](https://cdn-shop.adafruit.com/datasheets/SSD1306.pdf).
+
+### Frequenza di aggiornamento e budget del bus
+
+Considerando soltanto 1024 byte grafici e nove impulsi di clock per byte, compreso l’ACK, un trasferimento richiede almeno:
+
+```text
+t_bus ≈ 1024 × 9 / f_I2C
+100 kHz → circa 92,2 ms
+400 kHz → circa 23,0 ms
+```
+
+Sono limiti inferiori di calcolo, con comando e overhead esclusi; il secondo valore è un confronto ipotetico con un bus configurato a 400 kHz e compatibile con tutti i componenti. A 100 kHz un obiettivo di 20 fotogrammi al secondo lascia 50 ms per fotogramma, meno dei soli 92 ms del trasferimento: il programma non può rispettarlo aumentando semplicemente la velocità del loop.
+
+Conviene scegliere una frequenza di presentazione adatta ai dati. Una temperatura può essere aggiornata poche volte al secondo; un’animazione richiede più fotogrammi. Acquisizione, elaborazione e ridisegno possono avere intervalli differenti, conservando l’ultimo valore acquisito finché serve visualizzarlo.
+
+### Layout e qualità della visualizzazione
+
+Separa il valore numerico dal modo in cui viene presentato. Un codice ADC può essere filtrato e poi trasformato in percentuale; la barra usa quella percentuale, mentre il testo può mostrare anche il codice originale. Il numero di pixel disponibili limita la risoluzione grafica: su una barra larga 100 pixel più codici ADC diversi finiscono nella stessa lunghezza.
+
+Ridisegnare soltanto quando cambiano i dati, o a un intervallo massimo definito, evita traffico inutile. La presentazione deve anche distinguere un dato valido da un errore: una schermata rimasta ferma sull’ultima misura non rende visibile che il sensore ha smesso di rispondere. Questi criteri collegano framebuffer, temporizzazione e significato dei dati mostrati.
+
 ## Materiali e collegamenti
 
 - ESP32 classico con modulo WROOM-32, per esempio DOIT ESP32 DEVKIT V1, e cavo USB dati.

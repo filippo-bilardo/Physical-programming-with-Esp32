@@ -6,6 +6,59 @@ Il modulo **HC-SR04** emette un breve treno di ultrasuoni e misura il tempo nece
 
 La distanza si ricava da `d = tempo × velocità del suono / 2`. Negli sketch si usa l’approssimazione **distanza in cm = durata in µs / 58**, con risultato intero. Temperatura dell’aria, inclinazione, dimensioni e materiale dell’oggetto influenzano la lettura. L’intervallo nominale del modello standard è circa 2–400 cm: superfici troppo vicine, assorbenti o inclinate possono non produrre un eco utile.
 
+### Dall’emissione al tempo di volo
+
+Il trasmettitore converte un impulso elettrico in un breve treno acustico; il ricevitore rileva l’energia riflessa da una superficie. Nel modulo HC-SR04 il treno emesso comprende otto cicli a circa 40 kHz. Il breve impulso TRIG è un comando di avvio: la durata da convertire in distanza è quella del segnale ECHO generato dal modulo. [Datasheet HC-SR04](https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf).
+
+La riflessione deve compiere due tratte: sensore → oggetto e oggetto → sensore. Se `t` è il tempo complessivo e `c` la velocità del suono:
+
+```text
+2 × distanza = c × t
+distanza = c × t / 2
+```
+
+Con `c ≈ 343 m/s`, un oggetto a 1 m produce un tempo di andata e ritorno di circa `2/343 s = 5,83 ms`. Convertendo i metri in centimetri e i secondi in microsecondi si ricava `d_cm ≈ t_us/58,3`; il divisore 58 degli sketch è un’approssimazione pratica.
+
+### Geometria del bersaglio e zona cieca
+
+Il sensore copre una regione angolare, non un raggio geometrico infinitamente sottile. Un oggetto laterale può contribuire all’eco e una superficie obliqua può riflettere l’energia lontano dal ricevitore. Tessuti, superfici porose e oggetti piccoli possono restituire meno energia rispetto a una superficie ampia e favorevolmente orientata.
+
+A distanza molto breve il sistema può non separare bene emissione, vibrazioni residue ed eco: da qui la distanza minima specificata. Una lettura numerica sotto l’intervallo nominale richiede quindi valutazione. Il timeout intercetta un eco incompleto o assente; non valida automaticamente tutte le distanze numeriche ricevute.
+
+Riflessioni multiple possono far arrivare un percorso più lungo di quello diretto. Con più sensori vicini, un ricevitore potrebbe inoltre rilevare l’emissione dell’altro. La sequenza di attivazione e l’intervallo fra misure diventano parte del progetto.
+
+### Velocità del suono e incertezza
+
+La velocità del suono nell’aria dipende dalle condizioni ambientali, in particolare dalla temperatura. Se il programma usa una velocità ipotizzata diversa da quella effettiva, la distanza calcolata presenta un errore di scala. Dalla formula segue:
+
+```text
+distanza_calcolata / distanza_reale = c_usata / c_reale
+```
+
+Usare una velocità più bassa di quella reale porta a sottostimare la distanza. Una compensazione richiederebbe un sensore ambientale e un modello appropriato; non è presente negli sketch della raccolta.
+
+Vanno distinti **risoluzione**, **ripetibilità** e **accuratezza**. La risoluzione è il passo con cui il dato viene rappresentato: qui la divisione intera produce centimetri interi. La ripetibilità descrive quanto si disperdono letture ripetute nelle stesse condizioni. L’accuratezza richiede il confronto con un riferimento: una lettura molto stabile può comunque avere un errore sistematico.
+
+### Timeout e significato di una misura mancante
+
+`pulseIn()` attende l’impulso e ne restituisce la durata, oppure zero se non completa la lettura entro il timeout previsto. Un’attesa massima di 30 ms limita il blocco del programma; con 343 m/s quel tempo corrisponderebbe idealmente a circa 5,1 m di percorso di sola andata ricavato dal tempo totale. Non estende però la portata nominale del modulo a 5,1 m.
+
+Una misura mancante può dipendere da oggetto fuori portata, riflessione sfavorevole o problema nel collegamento. Il programma deve conservarne la **validità** insieme al valore. Usare zero come distanza farebbe scattare erroneamente l’allarme massimo; riutilizzare senza indicazione una vecchia misura nasconderebbe il problema. Gli esempi usano quindi `ERR ECO` o -1.
+
+### Media mobile: stabilità e ritardo
+
+Per una finestra di `N` campioni validi la media è `media = somma/N`. All’avvio il denominatore deve essere il numero di campioni realmente disponibili; includere posizioni ancora vuote come zeri abbasserebbe artificialmente il risultato.
+
+La media riduce alcune oscillazioni, ma distribuisce nel tempo una variazione reale. Con cinque campioni ideali equidistanti di 100 ms, i dati della finestra coprono 400 ms e la loro età media è circa 200 ms. È un esempio di ritardo del filtro; il periodo effettivo degli sketch comprende anche misura e altre istruzioni.
+
+Un singolo eco anomalo influenza più risultati finché rimane nella finestra. Una mediana, un controllo dell’intervallo nominale o una soglia sulla variazione sono possibili estensioni, ognuna con effetti sui dati accettati. La 02, in caso di eco mancante, azzera la storia e riparte dai nuovi campioni validi.
+
+### Allarme e scansione: leggere il dato nel tempo
+
+Vicino a una soglia il rumore può far cambiare ripetutamente fascia. L’**isteresi** può definire due distanze: una per entrare nella fascia vicina e una maggiore per uscirne. Il ritardo totale di risposta comprende scansione, misura, filtro e segnalazioni bloccanti; la frequenza della CPU da sola non lo descrive.
+
+Nello scanner il campione va associato all’angolo richiesto al momento della misura. Il servo richiede tempo per muoversi e il fascio ha una propria apertura; passi di 5° non garantiscono risoluzione angolare di 5° né una misura della posizione meccanica effettiva. Per tracciare il grafico, un valore -1 deve restare un campione non valido e le distanze oltre scala vanno interpretate secondo la convenzione indicata dallo sketch.
+
 ## Materiale e collegamenti
 
 ESP32 WROOM-32, HC-SR04 standard a 5 V, resistenze da **10 kΩ e 15 kΩ** per Echo; per la 03 LED con **220 Ω** e piezo passivo con **1 kΩ**; per la 04 servo posizionale.

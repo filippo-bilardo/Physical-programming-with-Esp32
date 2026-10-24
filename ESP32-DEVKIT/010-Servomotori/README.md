@@ -6,6 +6,49 @@ Un servomotore per modellismo integra motore, riduttore e circuito di controllo.
 
 In questi esempi il periodo è circa **20 ms (50 Hz)** e l’intervallo configurato è **1000–2000 µs**. `write(0..180)` mappa i comandi su questo intervallo; i numeri non garantiscono altrettanti gradi fisici. Verifica limiti e centro del tuo servo, inizialmente senza carico. Il comando non restituisce la posizione reale.
 
+### Il controllo interno del servo posizionale
+
+Un servo posizionale tradizionale contiene motore, riduttore, sensore della posizione interna — spesso un potenziometro — ed elettronica di controllo. Il circuito confronta posizione richiesta e posizione rilevata e pilota il motore per ridurre l’errore. Il riduttore aumenta la coppia disponibile all’albero rispetto al motore, introducendo anche attriti e gioco meccanico.
+
+Questo anello di controllo è interno al servo. L’ESP32 invia un riferimento e, con il normale collegamento a tre fili, non riceve la misura della posizione. Un comando scritto correttamente può quindi convivere con un servo rallentato dal carico o bloccato: per verificarne il moto serve un’osservazione o una misura aggiuntiva.
+
+### L’informazione è nella durata dell’impulso
+
+La linea di comando trasporta impulsi ripetuti. Per il servo conta soprattutto la durata HIGH, mentre il periodo stabilisce quanto spesso il riferimento viene ripresentato. Con periodo di 20 ms, impulsi di 1,0, 1,5 e 2,0 ms corrispondono rispettivamente a duty del 5%, 7,5% e 10%. Il circuito li interpreta come riferimenti diversi; non alimentano direttamente il motore per quelle percentuali del tempo.
+
+La corrispondenza fra microsecondi, centro e corsa varia fra modelli e unità. Il centro nominale a 1500 µs può non essere il centro meccanico, e il verso per impulsi crescenti va verificato. [Pololu: interfaccia di comando dei servo](https://www.pololu.com/blog/17/servo-control-interface-in-detail).
+
+Con l’intervallo configurato qui, la conversione software ideale è:
+
+```text
+impulso_us = 1000 + comando_gradi × (2000 − 1000) / 180
+comando 45  → 1250 µs
+comando 90  → 1500 µs
+comando 135 → 1750 µs
+```
+
+La parola “gradi” identifica la scala della libreria; i valori calcolati richiedono calibrazione per diventare angoli fisici attendibili. La libreria [ESP32Servo](https://github.com/madhephaestus/ESP32Servo) configura la generazione degli impulsi, lasciando al programma la scelta dei riferimenti e dei limiti.
+
+### Coppia, velocità e alimentazione
+
+La coppia richiesta dipende dalla forza e dalla distanza dall’asse: `τ = F × r` quando forza e braccio sono perpendicolari. Una massa di 0,1 kg posta a 5 cm richiede circa `0,1 × 9,81 × 0,05 = 0,049 N·m` per essere sostenuta in quella configurazione, trascurando massa del braccio, attriti e accelerazioni. Allungare il braccio aumenta la coppia richiesta anche senza cambiare il carico.
+
+La coppia di stallo dichiarata dal produttore descrive una condizione limite, non il carico da mantenere continuativamente. La corrente cresce con lo sforzo; spunti e variazioni rapide possono abbassare l’alimentazione se la sorgente o i cavi non sono adeguati. Il comando logico e l’alimentazione di potenza devono essere progettati separatamente, con il riferimento GND comune.
+
+### Posizionale e continuo: due significati del comando
+
+Nel servo continuo la modifica interna consente rotazione oltre la corsa posizionale, e il riferimento seleziona velocità e verso intorno a un neutro. Un impulso più lontano dal neutro non richiede un angolo maggiore. Senza encoder, farlo ruotare per un tempo scelto non garantisce un numero preciso di giri, perché la velocità dipende dal carico e dall’alimentazione.
+
+La 02 usa 1400/1500/1600 µs per esplorare questo comportamento. Per un servo posizionale gli stessi impulsi rappresenterebbero tre riferimenti di posizione. Identificare il tipo di servo viene quindi prima dell’interpretazione di ciò che si osserva.
+
+### Banda morta, rumore ADC e rampe
+
+Un potenziometro o joystick produce letture con piccole variazioni. Se ogni variazione provoca subito un comando, il servo può correggere continuamente e vibrare. Una **banda morta** attorno al centro evita correzioni per scostamenti piccoli; un filtro può attenuare il rumore ma introduce ritardo. Queste tecniche vanno calibrate sul dato effettivo e sul movimento desiderato.
+
+Una rampa modifica il riferimento per passi, per esempio un grado ogni 15 ms. Definisce la velocità richiesta alla sequenza di comandi, ma la velocità fisica resta limitata dal servo e dal carico. Due servo comandati nello stesso giro possono arrivare in momenti diversi se percorrono distanze diverse. Per coordinare un braccio occorre ragionare su traiettoria e durata, oltre ai soli punti finali.
+
+Anche il gioco del riduttore influenza il risultato: invertendo il verso può esserci un tratto di comando prima che il carico cambi movimento. Una maggiore risoluzione numerica del comando non elimina automaticamente gioco, attrito o errore di calibrazione.
+
 ## Libreria e alimentazione
 
 Installa **ESP32Servo** dal gestore librerie di Arduino IDE; ogni sketch include `libraries.txt`. La libreria `Servo` destinata ad altre architetture non è usata in questa raccolta. Apri una cartella alla volta con core **esp32 by Espressif Systems**.

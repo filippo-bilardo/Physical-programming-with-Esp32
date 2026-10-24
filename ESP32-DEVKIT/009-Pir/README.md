@@ -6,6 +6,48 @@ Un sensore **PIR** (Passive InfraRed) rileva variazioni della radiazione infraro
 
 Il PIR segnala una variazione, non misura distanza o temperatura e non garantisce il rilevamento di una persona ferma. La durata HIGH dipende anche dal temporizzatore e dal retrigger del modulo: il contatore degli esempi conta attivazioni, non persone.
 
+### Effetto piroelettrico e segnale differenziale
+
+Gli oggetti emettono radiazione infrarossa in funzione della loro temperatura. Il materiale piroelettrico del sensore produce un segnale quando cambia la radiazione che lo raggiunge. Nei comuni sensori a doppio elemento si confrontano due zone sensibili: una variazione che investe prima una zona e poi l’altra produce un segnale differenziale riconoscibile. Una variazione uniforme può avere un effetto diverso da un attraversamento del campo. [Adafruit: principio del sensore PIR](https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/how-pirs-work).
+
+Il segnale originario è debole e variabile; il modulo contiene amplificazione ed elaborazione che lo trasformano in un’uscita digitale. L’ESP32 legge quindi una decisione già elaborata. Dal solo HIGH/LOW non può ricostruire forma, temperatura o percorso della sorgente infrarossa.
+
+### Lente di Fresnel e movimento nel campo visivo
+
+La copertura bianca non è soltanto una protezione: le sue zone ottiche convogliano la radiazione sul sensore. Muoversi trasversalmente attraversa più zone e può produrre variazioni più nette rispetto ad avvicinarsi lungo una sola direzione. Posizione, altezza e orientamento del montaggio influenzano quindi la risposta.
+
+La probabilità di rilevamento dipende anche dal contrasto termico fra oggetto e sfondo. Se l’ambiente cambia, una prova riuscita con una mano a breve distanza non garantisce lo stesso esito con una persona lontana o quasi ferma. Il sensore rileva variazioni nel proprio campo, senza fornire una misura geometrica della posizione.
+
+### Temporizzazione interna e retrigger
+
+Dopo un’attivazione il modulo mantiene OUT alto per un intervallo. Nella modalità **retrigger** ulteriori rilevamenti possono prolungare l’uscita; nella modalità senza retrigger l’impulso segue la propria temporizzazione. Può essere presente anche un intervallo di inibizione dopo il ritorno basso. Jumper e trimmer del modello reale determinano questi comportamenti. [Adafruit: retrigger e tempi del modulo PIR](https://learn.adafruit.com/pir-passive-infrared-proximity-motion-sensor/testing-a-pir).
+
+Il programma osserva quindi una successione già filtrata nel tempo. Se OUT rimane alto per più movimenti, il contatore a fronti registra una sola attivazione. Se il modulo torna basso e poi alto mentre la stessa persona continua a muoversi, può contarne più di una. **Attivazioni del sensore e persone presenti non sono grandezze equivalenti.**
+
+### Tre tempi da distinguere
+
+| Tempo | Chi lo determina | Significato |
+| --- | --- | --- |
+| Stabilizzazione iniziale | Modulo e attesa del programma | Periodo in cui l’uscita può essere instabile |
+| Mantenimento di OUT | Circuito PIR e configurazione | Durata del segnale digitale dopo un rilevamento |
+| Spegnimento della luce | Programma ESP32 | Tempo aggiuntivo scelto per l’applicazione |
+
+Esempio di calcolo: l’ultimo movimento rilevabile avviene a 2 s, il modulo mantiene HIGH fino a 7 s e il programma spegne il LED 10 s dopo l’ultimo campione HIGH. La luce si spegnerà intorno a 17 s, con l’approssimazione della scansione. I dieci secondi software non partono necessariamente dall’ultimo gesto fisico.
+
+Anche la durata HIGH misurata dagli esempi descrive il segnale del modulo. È utile per analizzarne la temporizzazione, ma non costituisce la durata esatta di un movimento umano.
+
+### Fronti, polling e contatori indipendenti
+
+Il fronte LOW → HIGH segnala l’inizio di un’attivazione; HIGH → LOW ne segnala la fine. Il programma deve conservare il livello precedente per distinguerli da un HIGH mantenuto. Stampare “movimento” a ogni lettura alta è corretto come indicazione di livello, ma produce molte righe per la stessa attivazione.
+
+Ogni zona richiede una propria memoria del livello precedente e un proprio contatore. Condividere lo stesso stato fra tre sensori può confondere un rilascio in una zona con una nuova attivazione in un’altra. La scansione deve inoltre proseguire con regolarità: una lunga attesa può nascondere un’intera sequenza alto/basso.
+
+### Dal sensore allo stato dell’applicazione
+
+La macchina a stati dell’allarme conserva un’informazione distinta dal PIR. Disarmato, armato e scattato descrivono la politica dell’applicazione; il sensore fornisce soltanto il livello di ingresso. Un allarme memorizzato può rimanere scattato anche dopo il ritorno LOW, finché arriva un comando di disarmo.
+
+Per valutare il sistema conviene provare attraversamento laterale, avvicinamento, immobilità e uscita dal campo, registrando tempi e livello. Cambia una sola regolazione per volta. In questo modo si distinguono effetti del modulo, decisioni del programma e condizioni del montaggio.
+
 ## Collegamenti
 
 | Componente | Collegamento |

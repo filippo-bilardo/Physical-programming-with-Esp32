@@ -6,6 +6,53 @@ Un pulsante normalmente aperto chiude un contatto durante la pressione. Con `INP
 
 Il **livello** indica se il contatto è premuto; un **fronte** è il cambiamento di livello; un **click** richiede una pressione e un rilascio. I contatti meccanici possono rimbalzare, producendo più cambiamenti ravvicinati. Il filtro temporale accetta un nuovo stato soltanto dopo almeno **50 ms di stabilità**: non basta aggiungere un ritardo e chiamarlo debounce.
 
+### Un ingresso digitale misura una tensione
+
+Il GPIO interpreta la tensione rispetto a GND come livello basso o alto secondo le soglie elettriche del chip. La zona fra le soglie garantite non è un terzo stato utilizzabile dal programma. Un filo scollegato può raccogliere disturbi e cariche: il fatto che il codice legga 0 oppure 1 non significa che l’ingresso abbia un riferimento stabile.
+
+Il **pull-up** collega debolmente l’ingresso al positivo; chiudendo il pulsante verso GND si ottiene LOW. Il pull-up interno evita di lasciare il nodo flottante durante il funzionamento previsto. Il **pull-down** realizza il riferimento opposto e richiede un pulsante verso 3V3. Non tutti i GPIO offrono le stesse funzioni: gli ingressi 34–39 dell’ESP32 classico non hanno pull-up/pull-down interni. [Espressif: vincoli dei GPIO](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/peripherals/gpio.html).
+
+Con un ipotetico pull-up esterno da 10 kΩ a 3,3 V, la pressione fa circolare circa `3,3/10000 = 0,33 mA` nella resistenza. Il valore è un esempio per un componente esterno: il pull-up interno non va assunto pari a 10 kΩ. Nel circuito della raccolta si usa `INPUT_PULLUP`, senza aggiungere un collegamento diretto a 3V3 in parallelo al pulsante.
+
+### Rimbalzo: una pressione produce più transizioni
+
+I contatti possono toccarsi e separarsi ripetutamente prima di stabilizzarsi. Una sequenza grezza come HIGH → LOW → HIGH → LOW può quindi corrispondere a una sola pressione fisica. Contare i cambi di livello senza filtro trasforma questi rimbalzi in più comandi. La durata del fenomeno dipende dal componente: i 50 ms degli esempi sono una scelta didattica, da valutare rispetto al pulsante e alla risposta richiesta.
+
+Un filtro per stabilità conserva tre informazioni: ultima lettura grezza, stato accettato e istante dell’ultimo cambiamento grezzo. A ogni cambiamento riavvia il conteggio; accetta il candidato soltanto quando rimane invariato per l’intervallo richiesto. Questo è il principio del [debounce temporale mostrato negli esempi Arduino](https://github.com/arduino/arduino-examples/blob/main/examples/02.Digital/Debounce/Debounce.ino).
+
+| Istante di esempio | Lettura grezza | Decisione con stabilità di 50 ms |
+| --- | --- | --- |
+| Prima di 100 ms | HIGH | Rilasciato |
+| 100 ms | LOW | Inizia candidato premuto |
+| 106 ms | HIGH | Riparte il conteggio |
+| 110 ms | LOW | Riparte il conteggio |
+| 160 ms, se il livello resta LOW | LOW | Accetta la pressione |
+
+Attendere 50 ms dopo una lettura senza osservare ciò che accade nel frattempo non verifica lo stesso requisito. Un filtro RC può attenuare cambi rapidi in hardware, ma richiede un dimensionamento rispetto alle soglie e ai tempi del circuito; negli sketch di questa raccolta il filtro è software.
+
+### Campionamento e tempo di risposta
+
+Con il **polling** il programma controlla il pulsante a intervalli. Se legge soltanto ogni 100 ms, una pressione di 30 ms interamente compresa fra due letture può sfuggire. Il tempo massimo fra scansioni conta più della sola velocità teorica del processore: un lampeggio bloccante di un secondo impedisce qualsiasi lettura durante quell’intervallo.
+
+Il debounce aggiunge una latenza intenzionale. Un intervallo maggiore tende a respingere più disturbi brevi, ma può ignorare tocchi rapidi. Un interrupt segnala una transizione elettrica, inclusi i rimbalzi; la sua presenza non elimina la necessità di interpretarli e filtrarli.
+
+### Livello, evento e memoria dello stato
+
+| Informazione | Significato | Uso tipico |
+| --- | --- | --- |
+| Livello filtrato | Il tasto è ancora premuto | Tenere acceso un LED |
+| Fronte di pressione | È iniziata una nuova pressione valida | Incrementare un contatore |
+| Fronte di rilascio | È terminata una pressione | Completare un click |
+| Stato dell’applicazione | Memoria dei comandi precedenti | LED acceso dopo il rilascio |
+
+Per un comando a commutazione serve una variabile che ricordi lo stato del LED: il pulsante può essere rilasciato sia quando il LED deve restare acceso sia quando deve restare spento. Una macchina a stati estende la stessa idea a più condizioni, come OFF, rosso, verde e blu.
+
+Il doppio click richiede una finestra di osservazione. Un primo rilascio potrebbe ancora diventare parte di una coppia: scegliere di attendere la finestra prima di emettere il singolo introduce un ritardo percepibile. La politica adottata deve definire anche tripli click, pressione mantenuta e tasto già premuto all’avvio; le regole effettive degli sketch sono descritte più avanti.
+
+### Timer e ritorno a zero
+
+Le temporizzazioni usano la differenza unsigned `adesso − inizio`. Sul core ESP32 il contatore `millis()` ritorna a zero dopo circa 49,7 giorni. Per intervalli brevi rispetto al ciclo del contatore, e controllati con regolarità, la sottrazione unsigned permette di misurare correttamente il tempo anche attraversando quel ritorno. Questo criterio evita di basare il filtro su un confronto fragile con una scadenza sommata al tempo iniziale.
+
 ## Collegamenti
 
 Scheda ESP32 classico WROOM-32, per esempio DOIT ESP32 DEVKIT V1; pulsanti normalmente aperti, LED esterni, resistenze da **220 Ω** e, per l’esempio 05, potenziometro da 10 kΩ.

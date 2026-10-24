@@ -20,6 +20,39 @@ Supponiamo, solo come esempio, di osservare valori fra 55 e 70 senza tocco e fra
 
 Una soglia troppo bassa può perdere tocchi; una troppo alta può interpretare come tocchi anche le normali oscillazioni. Quando i due intervalli si sovrappongono, cambiare un solo numero può non bastare: servono un montaggio più stabile, filtraggio o una decisione che tenga conto del tempo.
 
+### Capacità elettrica ed elettrodo
+
+Un condensatore immagazzina carica secondo la relazione `Q = C × V`: a parità di tensione, una capacità maggiore richiede più carica. Nel tasto touch l’elettrodo, il corpo e l’ambiente formano un sistema di capacità distribuite. Il dito modifica l’accoppiamento elettrico anche attraverso un sottile strato isolante; non è necessario realizzare un contatto metallico diretto con il circuito.
+
+Il modello geometrico `C ≈ ε × A / d` di due superfici piane aiuta a ragionare su area, materiale isolante e distanza. È soltanto un modello qualitativo per questo montaggio: una mano, un filo e un piano di massa non formano un condensatore ideale con geometria fissa. Aumentando molto l’area o la lunghezza del collegamento aumentano anche capacità parassite e sensibilità all’ambiente.
+
+Il convertitore touch ripete cicli di carica e scarica: la capacità influenza la frequenza e quindi il conteggio nel tempo di osservazione. Nel modello classico usato qui, capacità maggiore significa normalmente meno cicli contati. La configurazione dei tempi di misura influenza lettura e sensibilità; eventuali modifiche richiedono una nuova calibrazione della soglia. [Espressif: misura e configurazione touch](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/touch.html).
+
+### Baseline, rumore e deriva
+
+La **baseline** è il valore tipico senza tocco. Il **rumore** è la variazione rapida intorno a quel valore; la **deriva** è il suo cambiamento lento, per esempio con l’ambiente. Per scegliere una soglia acquisisci più campioni nello stesso montaggio, prima senza dito e poi con tocchi normali. Confronta intervalli e oscillazioni, oltre alle sole medie.
+
+Una misura relativa può aiutare a confrontare due elettrodi diversi:
+
+```text
+variazione relativa = (baseline − lettura) / baseline
+baseline = 64, lettura = 16 → variazione = 0,75 = 75%
+```
+
+Questo esempio non converte il dato in pressione o capacità fisica. Richiede una baseline maggiore di zero e una calibrazione senza dito. Un algoritmo che aggiorna la baseline troppo rapidamente anche durante il tocco può finire per assorbire il tocco stesso come nuova condizione di riposo.
+
+### Isteresi e conferma temporale
+
+Per evitare commutazioni vicino alla soglia si possono usare due soglie. Con valore che diminuisce al tocco, si entra nello stato toccato sotto `S_ON` e si torna rilasciati sopra `S_OFF`, scegliendo `S_ON < S_OFF`. Per esempio, con intervalli adatti al montaggio, si può riconoscere il tocco sotto 20 e il rilascio sopra 30; fra 20 e 30 si conserva lo stato precedente. Questi numeri sono un esempio di progetto, da calibrare.
+
+Un filtro temporale aggiunge una condizione diversa: richiede che il candidato rimanga valido per un intervallo o per più campioni consecutivi. Isteresi e filtro temporale affrontano problemi diversi e possono essere combinati. Ogni filtro introduce una latenza: renderlo molto lento stabilizza la lettura ma peggiora la risposta di un tasto musicale.
+
+### Dal tocco al pianoforte
+
+Un **livello** indica che il dito è ancora presente; un **evento** indica che è iniziato o terminato un tocco. Per accendere un LED finché si tocca basta il livello; per cambiare pagina una sola volta serve il fronte. Per un pianoforte ogni elettrodo richiede stato, soglie e gestione del rilascio, così la nota non riparte a ogni scansione.
+
+Un singolo generatore `tone()` produce normalmente una nota per volta. Leggere più tasti non realizza automaticamente la polifonia: occorre stabilire una priorità fra tocchi o progettare una sintesi che mescoli più voci. Le tecniche di calibrazione, isteresi e gestione degli eventi descritte qui sono possibili estensioni; lo sketch fornito usa il confronto con la soglia indicata nel codice.
+
 ## Obiettivo dell’esempio
 
 Lo sketch [01-TouchPress.ino](01-TouchPress.ino) propone tre prove: visualizzare le letture sul monitor seriale, osservarle nel plotter e usare due tasti capacitivi per memorizzare lo stato di un LED. La prova attiva è `test3()`.

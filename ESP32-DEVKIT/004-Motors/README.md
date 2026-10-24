@@ -39,6 +39,37 @@ La percentuale è un **comando PWM**, non una misura di giri/minuto. Il motore p
 
 Il L298 introduce una caduta di tensione e dissipa calore. Dimensiona alimentazione, modulo e raffreddamento considerando anche la corrente di avviamento e di stallo; la corrente dichiarata per il circuito integrato non garantisce quella continua di qualunque schedina commerciale.
 
+### Un modello elettrico e meccanico del motore
+
+Nel rotore la corrente attraversa avvolgimenti immersi in un campo magnetico e genera una coppia. Le spazzole e il collettore commutano gli avvolgimenti durante la rotazione. Un modello semplificato mette in relazione tensione, corrente e velocità:
+
+```text
+V_motore ≈ R × I + L × dI/dt + K_e × ω
+coppia ≈ K_t × I
+```
+
+`R` e `L` sono resistenza e induttanza dell’avvolgimento, `ω` la velocità angolare, `K_e` e `K_t` costanti del motore. Il termine `K_e × ω` è la **forza controelettromotrice** generata dalla rotazione: crescendo la velocità, essa riduce la tensione disponibile per far crescere la corrente.
+
+All’avvio il rotore è fermo e la forza controelettromotrice è inizialmente nulla; anche un rotore bloccato rimane in questa condizione. L’induttanza limita la velocità iniziale di crescita della corrente, ma non il suo valore continuo. La stima `I_stallo ≈ V_motore/R` spiega perché corrente di spunto/stallo e corrente a vuoto possono differire molto. Per scegliere driver e alimentazione servono i valori del motore effettivo.
+
+### Percorsi di corrente nel ponte H
+
+Il ponte H dispone gli interruttori intorno al motore: una diagonale applica una polarità, l’altra applica quella opposta. Gli ingressi logici scelgono il percorso; la corrente di potenza arriva dall’alimentazione del motore. Il riferimento GND comune permette al driver di interpretare correttamente i comandi dell’ESP32.
+
+L’avvolgimento immagazzina energia magnetica, approssimata da `E = L × I² / 2`. Quando il comando cambia, la corrente richiede un percorso di ricircolo. Nel circuito con L298 la rete di diodi prevista dallo schema è parte del pilotaggio del carico induttivo: il modulo reale va controllato rispetto allo schema applicativo. La configurazione del ponte influenza corrente e frenatura durante le fasi di commutazione. [ST: funzionamento e applicazioni L298](https://www.st.com/resource/en/datasheet/l298.pdf).
+
+### Duty, corrente e perdite
+
+Se si trascurano le cadute e si usa una commutazione ideale fra alimentazione e tensione nulla, la tensione media sarebbe circa `D × V_alimentazione`. È un modello introduttivo: nel ponte reale intervengono cadute dei transistor, percorsi di ricircolo e andamento della corrente. Inerzia e induttanza rendono il movimento più regolare degli impulsi di comando, ma non trasformano il duty in una misura della velocità.
+
+Anche il driver dissipa energia. Per stimare l’ordine di grandezza delle perdite di conduzione si può usare `P ≈ I × V_caduta_ponte`. Una corrente maggiore aumenta il calore e riduce il margine termico. Il dissipatore del modulo, il cablaggio e la sorgente devono essere scelti in funzione delle condizioni reali, soprattutto sotto carico.
+
+### Controllo aperto e retroazione
+
+Gli sketch lavorano ad **anello aperto**: inviano un comando senza misurare giri o posizione. Due motori con lo stesso duty possono girare a velocità diverse per attrito, tolleranze e carico. Una rampa riduce la bruschezza dei cambi di comando, ma da sola non corregge queste differenze.
+
+Un controllo ad **anello chiuso** aggiungerebbe un sensore, per esempio un encoder, e confronterebbe velocità richiesta e velocità misurata. Il regolatore modificherebbe il duty in base all’errore. Sul robot la differenza fra comandi delle due ruote determina la curvatura richiesta; il percorso effettivo dipende anche da velocità reali, diametro delle ruote e aderenza. Questa distinzione permette di interpretare correttamente i movimenti degli esempi.
+
 ## Materiali e alimentazione
 
 - ESP32 classico WROOM-32, per esempio DOIT ESP32 DEVKIT V1, con cavo USB dati.

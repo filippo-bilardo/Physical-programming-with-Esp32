@@ -16,6 +16,37 @@ La resistenza limita la corrente. Con 3,3 V ideali e un LED rosso con caduta di 
 
 La scheda di riferimento è **ESP32 classico WROOM-32**, per esempio DOIT ESP32 DEVKIT V1, con logica a **3,3 V**. Per i collegamenti usa i GPIO indicati nella tabella: non collegare LED ai GPIO 6–11 del modulo ESP32, normalmente impiegati dalla Flash. Non applicare 5 V ai GPIO.
 
+### Dalla giunzione alla luce
+
+Il LED è un diodo a semiconduttore. Quando conduce nel verso diretto, parte dell’energia elettrica viene emessa come luce; il materiale determina il colore. L’**anodo** va verso il potenziale maggiore e il **catodo** verso quello minore nel circuito usato qui. La corrente cresce rapidamente con la tensione diretta: il LED richiede un elemento che la limiti.
+
+La caduta diretta `V_F` dipende da colore, corrente e temperatura. I 2 V usati per il LED rosso sono un’ipotesi di calcolo; un LED blu o bianco può avere una caduta diversa. Il GPIO introduce inoltre una propria caduta sotto carico. Per questo si dimensiona il ramo con il datasheet del componente, poi si confronta il calcolo con una misura.
+
+### Legge di Ohm e potenza della resistenza
+
+Il circuito GPIO → resistenza → LED → GND è un unico ramo: la stessa corrente attraversa resistenza e LED. Una prima stima del dimensionamento è:
+
+```text
+R ≈ (V_GPIO − V_F) / I_LED
+P_R = I_LED² × R = V_R² / R
+```
+
+Con le ipotesi precedenti e 220 Ω, la corrente è circa 5,9 mA e la potenza sulla resistenza circa `1,3² / 220 = 7,7 mW`. Il calcolo della potenza serve a scegliere anche la taglia della resistenza; non basta conoscere il valore in ohm. Su un RGB i tre rami possono avere cadute e correnti diverse: ogni colore ha la propria resistenza e i duty vanno scelti separatamente.
+
+### Periodo, frequenza e duty cycle
+
+Il **periodo** `T` è la durata di un ciclo, la **frequenza** è `f = 1/T`, il **duty cycle** è `D = t_ON/T`. Il Blink da un secondo acceso e un secondo spento ha periodo 2 s, frequenza 0,5 Hz e duty 50%. Se mantieni il periodo a 2 s ma accendi soltanto per 0,5 s, il duty diventa 25%.
+
+Il PWM impiega lo stesso principio con cicli molto più rapidi. A 5 kHz il periodo è 200 µs; al 25% l’uscita resta alta circa 50 µs per ciclo. La corrente istantanea durante l’impulso continua a dipendere dal ramo elettrico; la corrente media può essere approssimata con `I_media ≈ D × I_ON` quando il comportamento durante gli impulsi resta simile.
+
+La risoluzione a 8 bit offre 256 codici di comando. Un codice vicino a 128 corrisponde a circa metà scala, ma l’occhio non percepisce necessariamente metà luminosità. Una correzione della curva dei duty può rendere una dissolvenza più uniforme alla vista. Frequenza e risoluzione sono vincolate dalle risorse del generatore PWM; le API del core configurano la periferica [LEDC](https://docs.espressif.com/projects/arduino-esp32/en/latest/api/ledc.html).
+
+### Stato dell’uscita e organizzazione del programma
+
+Una scrittura HIGH rimane applicata finché una successiva operazione cambia l’uscita: non occorre riscriverla continuamente per mantenere il LED acceso. Il programma deve invece decidere **quando** cambiare stato. Con `delay()` sospende il proprio flusso; con una temporizzazione a `millis()` può leggere ingressi e seriale fra due cambi.
+
+Questa distinzione collega gli esempi: Blink studia lo stato, PWM studia il tempo di accensione, la classe LED raccoglie operazioni e dati, il comando seriale introduce un’interfaccia fra input dell’utente e uscita fisica. Osservare il LED permette di verificare il comportamento visibile; misurare tensione, corrente e tempi permette di verificarne il funzionamento elettrico.
+
 ## Materiali e piedinatura
 
 Servono scheda ESP32 e cavo USB dati, breadboard, cavetti, LED e resistenze da **220 Ω**. L’esempio 02 richiede un pulsante; il 05 tre LED rosso/giallo/verde; il 06 un RGB **a catodo comune** e tre resistenze; il 07 sei LED e sei resistenze.

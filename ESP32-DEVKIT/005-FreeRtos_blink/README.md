@@ -17,6 +17,36 @@ Ogni task conserva le proprie variabili locali nello stack; variabili globali e 
 
 `xTaskCreatePinnedToCore()` specifica funzione, nome, dimensione dello stack, parametro, priorità, handle e core. I due task hanno priorità 1; il valore 10000 indica byte di stack nell’implementazione ESP-IDF. Le funzioni dei task contengono un ciclo infinito perché devono continuare a eseguire la propria attività. I ritardi sono relativi alla chiamata: il periodo comprende anche il tempo delle istruzioni e non costituisce una temporizzazione precisa.
 
+### Cambio di contesto e priorità
+
+Quando cambia il task in esecuzione, il sistema salva il contesto necessario per riprenderlo e ripristina quello del successivo. Per il programmatore ogni funzione prosegue dal proprio punto, ma nel frattempo altri task possono aver modificato dati condivisi o usato una periferica.
+
+La priorità influenza quale task pronto possa usare un core, tenendo conto dell’affinità. Un task ad alta priorità che rimane sempre pronto può sottrarre tempo a task meno prioritari. Alzare la priorità non rende più accurato un algoritmo che usa ritardi relativi: occorre prima capire quali attività attendono e quali occupano la CPU. Le regole effettive della pianificazione su due core sono descritte da [Espressif per IDF FreeRTOS](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/freertos_idf.html).
+
+### Tick, periodo e jitter
+
+Il sistema usa un riferimento temporale a tick. La conversione fra millisecondi e tick e il momento in cui il task viene nuovamente eseguito introducono una granularità; il task può inoltre trovare il core occupato. La variazione fra istante desiderato e istante effettivo prende il nome di **jitter**.
+
+Considera un’attività che impiega 8 ms per leggere ed elaborare, poi attende 100 ms: il periodo sarà circa 108 ms più gli altri ritardi. Per un’attività periodica si può invece mantenere una sequenza di scadenze assolute tramite `vTaskDelayUntil()`, convertendo l’intervallo con `pdMS_TO_TICKS()`. Se il lavoro supera il periodo richiesto, anche questo approccio richiede una politica per gestire il ritardo. Questa è un’estensione rispetto ai `delay()` dello sketch.
+
+### Condivisione dei dati: perché un incremento può fallire
+
+L’istruzione `contatore++` sembra unica nel sorgente, ma comprende lettura, calcolo e scrittura. Se due task leggono entrambi 10 prima di scrivere, possono produrre entrambi 11: un aggiornamento viene perso. La correttezza dipende dalle operazioni e dalla sincronizzazione, anche quando il tipo di dato può essere letto con una singola istruzione.
+
+| Strumento | Uso tipico |
+| --- | --- |
+| Mutex | Consentire a un task alla volta di usare una risorsa condivisa |
+| Coda | Trasferire valori o richieste fra produttore e consumatore |
+| Semaforo o notifica | Segnalare un evento o la disponibilità di una risorsa |
+
+`volatile` non rende atomica una sequenza di operazioni e non sostituisce questi strumenti. Per una schermata aggiornata da più attività, un possibile progetto assegna il display a un solo task: gli altri gli inviano i valori da mostrare tramite una coda. Nel Blink ogni task possiede invece un GPIO distinto, il che semplifica il controllo dei LED.
+
+### Risorse e scelta della struttura
+
+Ogni task richiede memoria per stack e strutture di gestione. Uno stack insufficiente può compromettere il programma, mentre crearne molti con stack sovradimensionati consuma memoria disponibile per dati e librerie. Il risultato della creazione va controllato, e il dimensionamento va valutato sul programma effettivo.
+
+Per due lampeggi basta anche un solo loop con due timer a `millis()`. FreeRTOS diventa utile quando separare responsabilità, attese e scambi di messaggi rende il progetto più comprensibile. Il confronto didattico consiste nel riconoscere ciò che rimane uguale — stati dei LED e intervalli — e ciò che cambia: pianificazione, consumo di memoria e coordinamento delle attività.
+
 ## Circuito e avvio
 
 Usa ESP32 WROOM-32 **dual core**, due LED e due resistenze da **220 Ω**: GPIO 2 → resistenza → anodo LED 1, GPIO 4 → resistenza → anodo LED 2; catodi a GND. Il LED integrato su 2, se presente, può sostituire il primo esterno.

@@ -4,6 +4,63 @@
 
 Un **buzzer attivo** contiene un oscillatore: alimentandolo alla tensione prevista emette una frequenza sostanzialmente fissa. Un **piezo passivo** richiede invece un segnale alternato: `tone(pin, frequenza)` genera l’onda e `noTone(pin)` la interrompe. La frequenza determina l’altezza della nota; la durata determina il ritmo. Un altoparlante da 8 Ω non può sostituire direttamente il piezo sul GPIO.
 
+### Dalla deformazione del piezo al suono
+
+Nel piezo passivo un elemento piezoelettrico cambia leggermente forma quando varia il campo elettrico applicato. La deformazione fa vibrare il diaframma, che mette in movimento l’aria. La geometria del diaframma e dell’involucro determina una risposta in frequenza con zone di risonanza: due note comandate con la stessa ampiezza elettrica possono avere intensità sonore diverse. Il buzzer attivo aggiunge il circuito che genera l’oscillazione. [Murata: principio di funzionamento dei componenti piezoelettrici](https://www.murata.com.cn/products/sound/library/basic/mechanism).
+
+Un piezo presenta anche un comportamento capacitivo: la corrente si concentra durante le variazioni del segnale. Il valore della resistenza in serie influisce sul pilotaggio e va letto insieme alle caratteristiche del componente. I collegamenti proposti riguardano piccoli piezo adatti alla logica; la corrente di un buzzer attivo o di un trasduttore magnetico richiede una valutazione distinta.
+
+### Frequenza, periodo e timbro
+
+La frequenza indica quante oscillazioni si ripetono in un secondo. Per un tono da 1000 Hz il periodo è `T = 1/f = 1 ms`; a duty 50% si hanno circa 0,5 ms alto e 0,5 ms basso. Aumentando la frequenza cresce normalmente l’altezza percepita della nota.
+
+L’onda quadra contiene, oltre alla fondamentale, componenti armoniche che contribuiscono al **timbro**. Il piezo e il suo involucro filtrano queste componenti. Perciò il suono prodotto non coincide con quello di uno strumento acustico anche quando la frequenza fondamentale è la stessa.
+
+A duty 0% e 100% l’uscita è costante: dopo il transitorio non c’è l’oscillazione richiesta per un tono continuo sul piezo passivo. Variando il duty cambia anche il contenuto armonico; il risultato non è una scala lineare del volume. Questo chiarisce il comportamento dell’esperimento PWM della raccolta.
+
+### Note musicali e rapporti di frequenza
+
+Nel temperamento equabile un’ottava raddoppia la frequenza e ogni semitono moltiplica per `2^(1/12)`. Indicando con `n` il numero della nota secondo la convenzione MIDI, la frequenza si può calcolare come:
+
+```text
+f(n) = 440 × 2^((n − 69) / 12) Hz
+n = 69 → La4 = 440 Hz
+n = 81 → La5 = 880 Hz
+n = 60 → Do4 ≈ 261,6 Hz
+```
+
+È una corrispondenza matematica fra note e frequenze, indipendente dal protocollo usato per richiederle. Ricevere il testo `12` sulla seriale non costituisce la ricezione di un messaggio MIDI. L’arrotondamento a hertz interi introduce una piccola approssimazione, cui si aggiunge quella del generatore hardware.
+
+### Ritmo, durata e articolazione
+
+Il tempo in BPM conta i battiti al minuto; negli esempi RTTTL si assume come battito la semiminima. A 120 BPM una semiminima dura `60000/120 = 500 ms`. Se `d` è il denominatore della durata, si usa:
+
+```text
+durata della nota = 240000 / (BPM × d) ms
+```
+
+| Valore a 120 BPM | Denominatore | Durata |
+| --- | --- | --- |
+| Semibreve | 1 | 2000 ms |
+| Minima | 2 | 1000 ms |
+| Semiminima | 4 | 500 ms |
+| Croma | 8 | 250 ms |
+| Croma puntata | 8, con punto | 375 ms |
+
+Il punto aggiunge metà della durata. Una pausa occupa tempo senza suono; una breve interruzione fra note migliora l’articolazione. Il lettore locale mantiene circa il 90% della durata come suono e il resto come separazione, conservando il tempo complessivo dell’evento. I calcoli interi in millisecondi possono arrotondare le durate.
+
+### Riproduzione bloccante e macchina a stati
+
+Una melodia può essere rappresentata come sequenza di coppie frequenza/durata. Con un ciclo e `delay()` ogni nota impedisce al flusso principale di gestire altri comandi fino alla fine dell’attesa. La periferica può continuare a generare il segnale, ma il programma non legge automaticamente un pulsante di stop.
+
+Un lettore aggiornato a ogni giro conserva nota corrente, istante iniziale, durata e fase suono/pausa. Quando scade il tempo cambia fase e restituisce il controllo. La scansione del loop deve essere abbastanza frequente rispetto alla nota più breve: chiamate molto tardive a `update()` possono allungare le durate. Il metodo non bloccante evita l’attesa esplicita, ma la regolarità dipende da tutte le altre attività del programma.
+
+### RTTTL come linguaggio di dati
+
+La stringa RTTTL separa nome, impostazioni e lista degli eventi. Il parser converte simboli come `8c#6.` in durata, altezza e alterazione; la riproduzione usa poi i valori numerici. Validare denominatori, ottave e BPM evita divisioni per zero e interpretazioni fuori intervallo.
+
+Con un solo generatore si riproduce una linea melodica alla volta. La polifonia richiederebbe più voci e un metodo di combinazione del segnale; sommare richieste a `tone()` non mescola automaticamente le frequenze. Questa distinzione è utile quando si collega il buzzer al pianoforte touch o a un selettore di note.
+
 ## Materiale e collegamenti
 
 - ESP32 WROOM-32, piezo passivo adatto al pilotaggio logico e resistenza in serie da **1 kΩ**: GPIO **27 → 1 kΩ → positivo piezo**, negativo a GND.
