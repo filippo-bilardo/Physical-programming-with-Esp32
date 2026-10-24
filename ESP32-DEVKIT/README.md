@@ -10,4 +10,5 @@ https://docs.google.com/presentation/d/1BER52evUpidZoML4z8Hr2IAEfJpA_D4NQoqIp0HA
 - [LED Blink](001-LedBlink/README.md)
 - [TouchPress e pianoforte capacitivo](002-TouchPress/README.md)
 - [OLED: testo, grafica e misure](003-Oled/README.md)
+- [Motori DC e driver L298N](004-Motors/README.md)
 - [Drive strength dei GPIO](006-LedOn_DriveStrength/README.md)

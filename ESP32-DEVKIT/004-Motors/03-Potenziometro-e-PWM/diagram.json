@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "author": "Corso Physical Programming with ESP32",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-logic-analyzer",
+      "id": "logic1",
+      "top": -20,
+      "left": 300,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "arm",
+      "top": 160,
+      "left": -150,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-text",
+      "id": "note1",
+      "top": 240,
+      "left": 0,
+      "attrs": {
+        "text": "SOLO SEGNALI LOGICI: nessun L298N o motore simulato.\nD0=ENA D1=IN1 D2=IN2 D3=ENB D4=IN3 D5=IN4.\nTieni premuto il pulsante per abilitare i comandi."
+      }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot1",
+      "top": -10,
+      "left": -200,
+      "attrs": {
+        "value": "0"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "esp:TX0",
+      "$serialMonitor:RX",
+      "",
+      []
+    ],
+    [
+      "esp:RX0",
+      "$serialMonitor:TX",
+      "",
+      []
+    ],
+    [
+      "arm:1.l",
+      "esp:D23",
+      "green",
+      []
+    ],
+    [
+      "arm:2.l",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "logic1:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "logic1:D0",
+      "esp:D19",
+      "blue",
+      []
+    ],
+    [
+      "logic1:D1",
+      "esp:D5",
+      "blue",
+      []
+    ],
+    [
+      "logic1:D2",
+      "esp:D18",
+      "blue",
+      []
+    ],
+    [
+      "logic1:D3",
+      "esp:D4",
+      "blue",
+      []
+    ],
+    [
+      "logic1:D4",
+      "esp:D17",
+      "blue",
+      []
+    ],
+    [
+      "logic1:D5",
+      "esp:D16",
+      "blue",
+      []
+    ],
+    [
+      "pot1:VCC",
+      "esp:3V3",
+      "red",
+      []
+    ],
+    [
+      "pot1:GND",
+      "esp:GND.1",
+      "black",
+      []
+    ],
+    [
+      "pot1:SIG",
+      "esp:D34",
+      "green",
+      []
+    ]
+  ]
+}
